@@ -10,6 +10,19 @@ import it.solvingteam.pokeronline.model.Utente;
 
 public class UtenteDTO {
 	
+	private boolean checkId;
+	private boolean checkNome;
+	private boolean checkCognome;
+	private boolean checkUsername;
+	private boolean checkPassword;
+	private boolean checkDataRegistrazione;
+	private boolean checkStato;
+	private boolean checkExp;
+	private boolean checkCredito;
+	private boolean checkIdPartita;
+	private boolean checkIdRuoli;
+	private boolean checkIdTavoli;
+	
 	private String id;
 	private String nome;
 	private String cognome;
@@ -40,14 +53,38 @@ public class UtenteDTO {
 		this.idPartita = idPartita;
 		this.idRuoli = idRuoli;
 		this.idTavoli = idTavoli;
+		this.checkId = true;
+		this.checkNome = true;
+		this.checkCognome = true;
+		this.checkUsername = true;
+		this.checkPassword = true;
+		this.checkDataRegistrazione = true;
+		this.checkStato = true;
+		this.checkExp = true;
+		this.checkCredito = true;
+		this.checkIdPartita = true;
+		this.checkIdRuoli = true;
+		this.checkIdTavoli = true;
 	}
-	
-	public UtenteDTO(String nome, String cognome, String username, String password,
-			String dataRegistrazione, String stato, String exp, String credito, String idPartita,
-			String[] idRuoli, String[] idTavoli) {
-		this(null, nome, cognome, username, password, dataRegistrazione, stato, exp, credito, idPartita, idRuoli, idTavoli);
+
+	public UtenteDTO(String nome, String cognome, String username, String password) {
+		this.nome = nome;
+		this.cognome = cognome;
+		this.username = username;
+		this.password = password;
+		this.checkNome = true;
+		this.checkCognome = true;
+		this.checkUsername = true;
+		this.checkPassword = true;
 	}
-	
+
+	public UtenteDTO(String username, String password) {
+		this.username = username;
+		this.password = password;
+		this.checkUsername = true;
+		this.checkPassword = true;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -121,12 +158,8 @@ public class UtenteDTO {
 		this.idTavoli = idTavoli;
 	}
 	
-	public List<String> errors() {
-		return errors(false, false, false, false);
-	}
-	
 	@SuppressWarnings("deprecation")
-	public List<String> errors (boolean checkId, boolean checkPartita, boolean checkRuoli, boolean checkTavoli) {
+	public List<String> errors() {
 		List<String> result = new ArrayList<String>();
 		if (checkId) {
 			if(StringUtils.isBlank(this.id)) {
@@ -139,35 +172,53 @@ public class UtenteDTO {
 				}
 			}
 		}
-		if(StringUtils.isBlank(this.nome))
-			result.add("Il campo nome non può essere vuoto");
-		if(StringUtils.isBlank(this.cognome))
-			result.add("Il campo cognome non può essere vuoto");
-		if(StringUtils.isBlank(this.username))
-			result.add("Il campo username non può essere vuoto");	
-		if (StringUtils.isBlank(this.dataRegistrazione)) {
-			result.add("Il campo data registrazione non può essere vuoto");
-		} else {
-			try {
-				new Date(dataRegistrazione);
-			} catch(IllegalArgumentException e) {
-				result.add("Data registrazione inserita non valida");
+		if (checkNome) {
+			if(StringUtils.isBlank(this.nome))
+				result.add("Il campo nome non può essere vuoto");
+		}
+		if (checkCognome) {
+			if(StringUtils.isBlank(this.cognome))
+				result.add("Il campo cognome non può essere vuoto");
+		}
+		if (checkUsername) {
+			if(StringUtils.isBlank(this.username))
+				result.add("Il campo username non può essere vuoto");
+		}
+		if (checkPassword) {
+			if(StringUtils.isBlank(this.password))
+				result.add("Il campo password non può essere vuoto");
+		}
+		if (checkDataRegistrazione) {
+			if (StringUtils.isBlank(this.dataRegistrazione)) {
+				result.add("Il campo data registrazione non può essere vuoto");
+			} else {
+				try {
+					new Date(dataRegistrazione);
+				} catch(IllegalArgumentException e) {
+					result.add("Data registrazione inserita non valida");
+				}
 			}
 		}
-		if (StringUtils.isBlank(this.stato)) {
-			result.add("Il campo stato non può essere vuoto");
-		} else {
-			try {
-				Enum.valueOf(Utente.Stato.class, stato);
-			} catch(IllegalArgumentException e) {
-				result.add("Stato inserito non valido");
+		if (checkStato) {
+			if (StringUtils.isBlank(this.stato)) {
+				result.add("Il campo stato non può essere vuoto");
+			} else {
+				try {
+					Enum.valueOf(Utente.Stato.class, stato);
+				} catch(IllegalArgumentException e) {
+					result.add("Stato inserito non valido");
+				}
 			}
-		}	
-		if (StringUtils.isBlank(this.exp))
-			result.add("Il campo punti esperienza non può essere vuoto");
-		if (StringUtils.isBlank(this.credito))
-			result.add("Il campo credito non può essere vuoto");
-		if (checkPartita) {
+		}
+		if (checkExp) {
+			if (StringUtils.isBlank(this.exp))
+				result.add("Il campo punti esperienza non può essere vuoto");
+		}
+		if (checkCredito) {
+			if (StringUtils.isBlank(this.credito))
+				result.add("Il campo credito non può essere vuoto");
+		}
+		if (checkIdPartita) {
 			if(StringUtils.isBlank(this.idPartita)) {
 				result.add("Il campo partita non può essere vuoto");			
 			} else {
@@ -178,7 +229,7 @@ public class UtenteDTO {
 				}
 			}
 		}
-		if (checkRuoli) {
+		if (checkIdRuoli) {
 			for (String idRuolo : this.idRuoli) {
 				if(StringUtils.isBlank(idRuolo)) {
 					result.add("Il campo ruolo non può essere vuoto");
@@ -191,7 +242,7 @@ public class UtenteDTO {
 				}
 			}
 		}
-		if (checkTavoli) {
+		if (checkIdTavoli) {
 			for (String idTavolo : this.idTavoli) {
 				if(StringUtils.isBlank(idTavolo)) {
 					result.add("Il campo tavolo non può essere vuoto");
@@ -215,10 +266,10 @@ public class UtenteDTO {
 		result.setCognome(this.cognome);
 		result.setUsername(this.username);
 		result.setPassword(this.password);
-		result.setDataRegistrazione(new Date(this.dataRegistrazione));
-		result.setStato(Enum.valueOf(Utente.Stato.class, this.stato));
-		result.setExp(Integer.parseInt(this.exp));
-		result.setCredito(Integer.parseInt(this.credito));
+		if (this.dataRegistrazione != null) { result.setDataRegistrazione(new Date(this.dataRegistrazione)); }
+		if (this.stato != null) { result.setStato(Enum.valueOf(Utente.Stato.class, this.stato)); }
+		if (this.exp != null) { result.setExp(Integer.parseInt(this.exp)); }
+		if (this.credito != null) { result.setCredito(Integer.parseInt(this.credito)); }
 		return result;
 	}
 

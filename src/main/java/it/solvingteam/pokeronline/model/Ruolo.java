@@ -19,8 +19,8 @@ public class Ruolo {
 	}
 
 	public Ruolo(String descrizione, Codice codice) {
-		this.setDescrizione(descrizione);
-		this.setCodice(codice);
+		this.descrizione = descrizione;
+		this.codice = codice;
 	}
 	
 	public Long getId() {
@@ -86,7 +86,7 @@ public class Ruolo {
 		return true;
 	}
 
-	enum Codice {
+	public enum Codice {
 		ADMIN_ROLE,
 		PLAYER_ROLE,
 		SPECIAL_PLAYER_ROLE;

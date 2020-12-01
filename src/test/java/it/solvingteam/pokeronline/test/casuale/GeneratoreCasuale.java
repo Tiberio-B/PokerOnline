@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.solvingteam.pokeronline.model.Ruolo;
 import it.solvingteam.pokeronline.model.Tavolo;
@@ -14,7 +15,7 @@ import it.solvingteam.pokeronline.service.ruolo.RuoloService;
 import it.solvingteam.pokeronline.service.tavolo.TavoloService;
 import it.solvingteam.pokeronline.service.utente.UtenteService;
 
-
+@Component
 public class GeneratoreCasuale extends Random {
 
 	private static final long serialVersionUID = 1L;
@@ -66,15 +67,15 @@ public class GeneratoreCasuale extends Random {
 		return nomeCasuale() + " " + cognomeCasuale();
 	}
 	
-	public Tavolo tavoloCasuale() throws Exception {
+	public Tavolo tavoloCasuale() {
 		return elementoCasuale(tavoloService.elenca());
 	}
 	
-	public Ruolo ruoloCasuale() throws Exception {
+	public Ruolo ruoloCasuale() {
 		return elementoCasuale(ruoloService.elenca());
 	}
 	
-	public Utente utenteCasuale() throws Exception {
+	public Utente utenteCasuale() {
 		return elementoCasuale(utenteService.elenca());
 	}
 
@@ -85,6 +86,10 @@ public class GeneratoreCasuale extends Random {
 		int mese = nextInt(meseMin, meseMax);
 		int anno = nextInt(annoMin, annoMax);
 		return new Date(anno - 1900, mese - 1, giorno);
+	}
+	
+	Date dataCasuale() {
+		return dataCasuale(1, 28, 1, 12, 2000, 2020);
 	}
 
 	public String usernameCasuale() {
@@ -97,5 +102,13 @@ public class GeneratoreCasuale extends Random {
 	
 	public int expCasuale(int min, int max) {
 		return nextInt(min, max);
+	}
+	
+	public Tavolo nuovoTavoloCasuale() {
+		return new Tavolo(usernameCasuale(), nextInt(), nextInt(), dataCasuale());
+	}
+	
+	public Utente nuovoUtenteCasuale() {
+		return new Utente(nomeCasuale(), cognomeCasuale(), usernameCasuale(), "a", dataCasuale());
 	}
 }

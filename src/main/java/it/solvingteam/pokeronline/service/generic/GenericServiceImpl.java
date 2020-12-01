@@ -2,16 +2,11 @@ package it.solvingteam.pokeronline.service.generic;
 
 import java.util.List;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.solvingteam.pokeronline.repository.GenericRepository;
-
+@Component
 public abstract class GenericServiceImpl<T> implements GenericService<T> {
-	
-	public abstract GenericRepository<T> getRepository();
 
 	@Override
 	@Transactional(readOnly = true)
@@ -43,13 +38,13 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 		getRepository().delete(instance);
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<T> findByExample(T example) {
-		ExampleMatcher matcher = ExampleMatcher.matching()
-				.withStringMatcher(StringMatcher.CONTAINING); // Match string containing pattern
-		// .withIgnoreCase();
-		return (List<T>) getRepository().findAll(Example.of(example, matcher));
-	}
+//	@Override
+//	@Transactional(readOnly = true)
+//	public List<T> findByExample(T example) {
+//		ExampleMatcher matcher = ExampleMatcher.matching()
+//				.withStringMatcher(StringMatcher.CONTAINING); // Match string containing pattern
+//		// .withIgnoreCase();
+//		return (List<T>) getRepository().findAll(Example.of(example, matcher));
+//	}
 
 }

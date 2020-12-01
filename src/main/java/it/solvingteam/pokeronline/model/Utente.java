@@ -40,7 +40,7 @@ public class Utente {
 	private int exp;
 	private int credito;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
 	private Set<Ruolo> ruoli = new HashSet<>(0);
 	
@@ -48,7 +48,7 @@ public class Utente {
 	private Set<Tavolo> tavoli = new HashSet<>(0);
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "partita_fk", nullable = false)
+	@JoinColumn(name = "partita_fk", nullable = true)
 	private Tavolo partita;
 
 	public Utente() {
