@@ -15,7 +15,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import it.solvingteam.pokeronline.model.Utente;
 import it.solvingteam.pokeronline.service.utente.UtenteService;
-import it.solvingteam.pokeronline.utils.Utils;
+import it.solvingteam.pokeronline.util.Utils;
 
 /**
  * Servlet implementation class CompraCreditiServlet

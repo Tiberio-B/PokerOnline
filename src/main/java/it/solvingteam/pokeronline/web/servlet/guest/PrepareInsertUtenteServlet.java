@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.solvingteam.pokeronline.utils.Utils;
+import it.solvingteam.pokeronline.util.Utils;
 
 /**
  * Servlet implementation class SignUpServlet

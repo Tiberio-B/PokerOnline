@@ -1,6 +1,12 @@
 package it.solvingteam.pokeronline.service.tavolo;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +19,9 @@ import it.solvingteam.pokeronline.service.utente.UtenteService;
 
 @Component
 public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements TavoloService {
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 	
 	@Autowired
 	private TavoloRepository tavoloRepository;
@@ -44,6 +53,51 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 		}
 		aggiorna(tavolo);
 		return aggiunti;
+	}
+	
+	@Override
+	public List<Tavolo> findByExample(Tavolo instance) {
+		String base = "from Tavolo t  where 1=1";
+		Long id = instance.getId();
+		String nome = instance.getNome();
+		Integer expMin = instance.getExpMin();
+		Integer puntataMin = instance.getPuntataMin();
+		Date dataCreazione = instance.getDataCreazione();
+		Utente proprietario = instance.getProprietario();
+		boolean idNotNull = id != null;
+		boolean nomeNotNull = nome != null;
+		boolean expMinNotNull = expMin != null;
+		boolean puntataMinNotNull = puntataMin != null;
+		boolean dataCreazioneNotNull = dataCreazione != null;
+		boolean proprietarioNotNull = proprietario != null;
+		if (idNotNull) {
+			base += " and t.id = " + id;
+		}
+		if (nomeNotNull) {
+			base += " and t.nome like '%" + nome + "%'";
+		}
+		if (expMinNotNull) {
+			base += " and t.expMin = " + expMin;
+		}
+		if (puntataMinNotNull) {
+			base += " and t.puntataMin = " + puntataMin;
+		}
+		if (dataCreazioneNotNull) {
+			base += " and t.dataCreazione = " + dataCreazione;
+		}
+		if (proprietarioNotNull) {
+			base += " and t.proprietario = :proprietario";
+		}
+		TypedQuery<Tavolo> query = entityManager.createQuery(base, Tavolo.class);
+		if (proprietarioNotNull) {
+			query.setParameter("proprietario", proprietario);
+		}
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Tavolo> elencaConGiocatori() {
+		return tavoloRepository.findAllFetchGiocatori();
 	}
 
 }

@@ -1,14 +1,20 @@
 package it.solvingteam.pokeronline.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import it.solvingteam.pokeronline.model.Ruolo;
 import it.solvingteam.pokeronline.model.Utente;
+import it.solvingteam.pokeronline.util.Utils;
 
 public class UtenteDTO {
+	
+	private boolean checkEmptyOrNull = true;
 	
 	private boolean checkId;
 	private boolean checkNome;
@@ -32,6 +38,8 @@ public class UtenteDTO {
 	private String stato;
 	private String exp;
 	private String credito;
+	private String ruoloId;
+	
 	private String idPartita;
 	private String[] idRuoli;
 	private String[] idTavoli;
@@ -83,6 +91,19 @@ public class UtenteDTO {
 		this.password = password;
 		this.checkUsername = true;
 		this.checkPassword = true;
+	}
+
+	public UtenteDTO(String nome, String cognome, String username, String credito, String exp,
+			String dataRegistrazione, String stato, String ruoloId, boolean checkEmptyOrNull) {
+		this.nome = nome;
+		this.cognome = cognome;
+		this.username = username;
+		this.credito = credito;
+		this.exp = exp;
+		this.dataRegistrazione = dataRegistrazione;
+		this.ruoloId = ruoloId;
+		this.stato = stato;
+		this.checkEmptyOrNull = checkEmptyOrNull;
 	}
 
 	public String getId() {
@@ -158,8 +179,53 @@ public class UtenteDTO {
 		this.idTavoli = idTavoli;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public List<String> errors() {
+		if (!checkEmptyOrNull) return searchErrors();
+		return errorsNotNull();
+	}
+	
+	public List<String> searchErrors() {
+		List<String> result = new ArrayList<String>();
+		if (exp != null && !"".equals(exp)) {
+			try {
+				Integer.parseInt(exp);
+			} catch(NumberFormatException e) {
+				result.add("Esperienza inserita non valida");
+			}
+		}
+		if (credito != null && !"".equals(credito)) {
+			try {
+				Integer.parseInt(credito);
+			} catch(NumberFormatException e) {
+				result.add("Credito inserito non valido");
+			}
+		}
+		if (ruoloId != null && !"".equals(ruoloId)) {
+			try {
+				Long.parseLong(ruoloId);
+			} catch(NumberFormatException e) {
+				result.add("Ruolo inserito non valido");
+			}
+		}
+		if (stato != null && !"".equals(stato)) {
+			try {
+				Enum.valueOf(Utente.Stato.class, stato);
+			} catch(IllegalArgumentException e) {
+				result.add("Stato inserito non valido");
+			}
+		}
+		if (dataRegistrazione != null && !"".equals(dataRegistrazione) ) {
+			try {
+				new SimpleDateFormat("yyyy-MM-dd").parse(dataRegistrazione);
+			} catch (ParseException e) {
+				result.add("Data registrazione inserita non valida");
+			}
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public List<String> errorsNotNull() {
 		List<String> result = new ArrayList<String>();
 		if (checkId) {
 			if(StringUtils.isBlank(this.id)) {
@@ -258,7 +324,6 @@ public class UtenteDTO {
 		return result;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public Utente buildModel() {
 		Utente result = new Utente();;
 		if (this.id != null) { result.setId(Long.parseLong(this.id)); }
@@ -266,10 +331,30 @@ public class UtenteDTO {
 		result.setCognome(this.cognome);
 		result.setUsername(this.username);
 		result.setPassword(this.password);
-		if (this.dataRegistrazione != null) { result.setDataRegistrazione(new Date(this.dataRegistrazione)); }
-		if (this.stato != null) { result.setStato(Enum.valueOf(Utente.Stato.class, this.stato)); }
-		if (this.exp != null) { result.setExp(Integer.parseInt(this.exp)); }
-		if (this.credito != null) { result.setCredito(Integer.parseInt(this.credito)); }
+		Date data = null;
+		if (!Utils.isEmptyOrNull(this.dataRegistrazione)) {
+			try {
+				data = new SimpleDateFormat("yyyy-MM-dd").parse(this.dataRegistrazione);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		result.setDataRegistrazione(data);
+		Integer experience = null;
+		if (!Utils.isEmptyOrNull(this.exp)) {
+			experience = Integer.parseInt(this.exp);
+		}
+		result.setExp(experience);
+		Integer crediti = null;
+		if (!Utils.isEmptyOrNull(this.credito)) {
+			crediti = Integer.parseInt(this.credito);
+		}
+		result.setCredito(crediti);
+		Utente.Stato s = null;
+		if (!Utils.isEmptyOrNull(this.stato)) { 
+			s = Enum.valueOf(Utente.Stato.class, this.stato);
+		}
+		result.setStato(s);
 		return result;
 	}
 

@@ -17,7 +17,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import it.solvingteam.pokeronline.dto.UtenteDTO;
 import it.solvingteam.pokeronline.model.Utente;
 import it.solvingteam.pokeronline.service.utente.UtenteService;
-import it.solvingteam.pokeronline.utils.Utils;
+import it.solvingteam.pokeronline.util.Utils;
 
 /**
  * Servlet implementation class ExecuteInsertUtenteServlet
@@ -43,10 +43,9 @@ public class ExecuteInsertUtenteServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     
-    public void goBack(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void sendBack(HttpServletRequest request, HttpServletResponse response, UtenteDTO utenteDTO) throws ServletException, IOException {
     	
-    	String[] paramNames = new String[]{"nome", "cognome", "username", "password"};
-    	Utils.sendParamsBack(request, paramNames);
+    	request.setAttribute("utenteDTO", utenteDTO);
     	request.getRequestDispatcher("jsp/guest/signup.jsp").forward(request, response);
     }
 
@@ -60,19 +59,18 @@ public class ExecuteInsertUtenteServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		UtenteDTO utenteDTO = new UtenteDTO(nome, cognome, username, password);
+		
+		if (utenteService.usernameEsistente(username)) { // se username esistente, reindirizza in pagina con errore
+			Utils.addError(request, "L'username specificato è già in uso.");
+			sendBack(request, response, utenteDTO);
+			return;
+		}
+		
 		List<String> errors = utenteDTO.errors();
 		
-		boolean usernameEsistente = utenteService.usernameEsistente(username);
-		boolean erroriValidazione = !errors.isEmpty();
-		
-		if (usernameEsistente || erroriValidazione) { // se errori, reindirizza in pagina con messaggi appropriati
-			if (usernameEsistente) {
-				Utils.addError(request, "L'username specificato è già in uso.");
-			}
-			if (erroriValidazione) {
-				Utils.addErrors(request, errors);
-			}
-			goBack(request, response);
+		if (!errors.isEmpty()) { // se errori validazione, reindirizza in pagina con errori appropriati
+			Utils.addErrors(request, errors);
+			sendBack(request, response, utenteDTO);
 			return;
 		}
 		

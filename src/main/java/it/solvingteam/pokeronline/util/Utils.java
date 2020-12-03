@@ -1,8 +1,10 @@
-package it.solvingteam.pokeronline.utils;
+package it.solvingteam.pokeronline.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -138,6 +140,24 @@ public class Utils {
 		for (String paramName : paramNames) {
 			request.setAttribute(paramName, request.getParameter(paramName));
 		}
+	}
+	
+	public static String dateToString(Date date, String pattern) {
+		return new SimpleDateFormat(pattern).format(date);
+	}
+	
+	public static String dateToString(Date date) {
+		String pattern = "dd-MM-yyyy";
+		return dateToString(date, pattern);
+	}
+	
+	public static boolean isEmptyOrNull(Object o) {
+		boolean ret = false;
+		if (o == null) { return true; };
+		if ("".equals(o)) { return true; }
+		if (o instanceof List) { return ((List<?>) o).isEmpty(); }
+		if (o instanceof Set) { return ((Set<?>) o).isEmpty(); }
+		return ret;
 	}
 
 }

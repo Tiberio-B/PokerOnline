@@ -21,8 +21,8 @@ public class Tavolo {
 	
 	private String nome;
 	
-	private int expMin;
-	private int puntataMin;
+	private Integer expMin;
+	private Integer puntataMin;
 	
 	private Date dataCreazione;
 	
@@ -58,19 +58,19 @@ public class Tavolo {
 		this.nome = nome;
 	}
 
-	public int getExpMin() {
+	public Integer getExpMin() {
 		return expMin;
 	}
 
-	public void setExpMin(int expMin) {
+	public void setExpMin(Integer expMin) {
 		this.expMin = expMin;
 	}
 
-	public int getPuntataMin() {
+	public Integer getPuntataMin() {
 		return puntataMin;
 	}
 
-	public void setPuntataMin(int puntataMin) {
+	public void setPuntataMin(Integer puntataMin) {
 		this.puntataMin = puntataMin;
 	}
 

@@ -35,10 +35,10 @@ public class Utente {
 	private Date dataRegistrazione;
 
 	@Enumerated(EnumType.STRING)
-	private Stato stato = Stato.CREATO;
+	private Stato stato;
 	
-	private int exp;
-	private int credito;
+	private Integer exp;
+	private Integer credito;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "ruolo_id", referencedColumnName = "ID"))
@@ -61,6 +61,7 @@ public class Utente {
 		this.username = username;
 		this.password = password;
 		this.dataRegistrazione = dataRegistrazione;
+		this.stato = Stato.CREATO;
 	}
 
 	public Long getId() {
@@ -119,19 +120,19 @@ public class Utente {
 		this.stato = stato;
 	}
 
-	public int getExp() {
+	public Integer getExp() {
 		return exp;
 	}
 
-	public void setExp(int exp) {
+	public void setExp(Integer exp) {
 		this.exp = exp;
 	}
 
-	public int getCredito() {
+	public Integer getCredito() {
 		return credito;
 	}
 
-	public void setCredito(int credito) {
+	public void setCredito(Integer credito) {
 		this.credito = credito;
 	}
 

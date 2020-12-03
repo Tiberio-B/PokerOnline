@@ -1,5 +1,7 @@
 package it.solvingteam.pokeronline.dto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import it.solvingteam.pokeronline.model.Tavolo;
 
 public class TavoloDTO {
+	
+	private boolean checkEmptyOrNull = true;
 	
 	private String id;
 	private String nome;
@@ -30,10 +34,14 @@ public class TavoloDTO {
 		this.idProprietario = idProprietario;
 		this.idGiocatori = idGiocatori;
 	}
-	
-	public TavoloDTO(String nome, String expMin, String puntataMin, String dataCreazione,
-			String idProprietario, String[] idGiocatori) {
-		this(null, nome, expMin, puntataMin, dataCreazione, idProprietario, idGiocatori);
+
+	public TavoloDTO(String nome, String puntataMin, String expMin, String dataCreazione,
+			boolean checkNotNull) {
+		this.nome = nome;
+		this.puntataMin = puntataMin;
+		this.expMin = expMin;
+		this.dataCreazione = dataCreazione;
+		this.checkEmptyOrNull = checkNotNull;
 	}
 
 	public String getId() {
@@ -91,12 +99,44 @@ public class TavoloDTO {
 	public void setIdGiocatori(String[] idGiocatori) {
 		this.idGiocatori = idGiocatori;
 	}
+	
 	public List<String> errors() {
-		return errors(false, false, false);
+		if (!checkEmptyOrNull) return searchErrors();
+		return errorsNotNull(false, false, false);
 	}
 	
-	@SuppressWarnings("deprecation")
-	public List<String> errors (boolean checkId, boolean checkProprietario, boolean checkGiocatori) {
+	public List<String> searchErrors() {
+		List<String> result = new ArrayList<String>();
+//		if (nome != null && ! "".equals(nome)) {
+//			if (StringUtils.isWhitespace(nome)) {
+//				result.add("Nome inserito non valido.");
+//			}
+//		}
+		if (expMin != null && !"".equals(expMin)) {
+			try {
+				Integer.parseInt(this.expMin);
+			} catch(NumberFormatException e) {
+				result.add("Esperienza minima inserita non valida");
+			}
+		}
+		if (puntataMin != null && !"".equals(puntataMin)) {
+			try {
+				Integer.parseInt(this.puntataMin);
+			} catch(NumberFormatException e) {
+				result.add("Puntata minima inserita non valida");
+			}
+		}
+		if (dataCreazione != null && !"".equals(dataCreazione) ) {
+			try {
+				new SimpleDateFormat("yyyy-MM-dd").parse(dataCreazione);
+			} catch (ParseException e) {
+				result.add("Data registrazione inserita non valida");
+			}
+		}
+		return result;
+	}
+	
+	public List<String> errorsNotNull(boolean checkId, boolean checkProprietario, boolean checkGiocatori) {
 		List<String> result = new ArrayList<String>();
 		if (checkId) {
 			if(StringUtils.isBlank(this.id)) {
@@ -130,11 +170,11 @@ public class TavoloDTO {
 			}
 		}
 		if (StringUtils.isBlank(this.dataCreazione)) {
-			result.add("Il campo data registrazione non può essere vuoto");
+			result.add("Il campo data creazione non può essere vuoto");
 		} else {
 			try {
-				new Date(dataCreazione);
-			} catch(IllegalArgumentException e) {
+				new SimpleDateFormat("yyyy-MM-dd").parse(dataCreazione);
+			} catch (ParseException e) {
 				result.add("Data registrazione inserita non valida");
 			}
 		}
@@ -145,7 +185,7 @@ public class TavoloDTO {
 				try {
 					Long.parseLong(this.idProprietario);
 				} catch(NumberFormatException e) {
-					result.add("Proprietario inserito non valida");
+					result.add("Proprietario inserito non valido");
 				}
 			}
 		}
@@ -165,14 +205,29 @@ public class TavoloDTO {
 		return result;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public Tavolo buildModel() {
 		Tavolo result = new Tavolo();;
 		if (this.id != null) { result.setId(Long.parseLong(this.id)); }
 		result.setNome(this.nome);
-		result.setExpMin(Integer.parseInt(this.expMin));
-		result.setPuntataMin(Integer.parseInt(this.puntataMin));
-		result.setDataCreazione(new Date(this.dataCreazione));
+		Integer exp = null;
+		if (!"".equals(this.expMin)) {
+			exp = Integer.parseInt(this.expMin);
+		}
+		result.setExpMin(exp);
+		Integer puntata = null;
+		if (!"".equals(this.puntataMin)) {
+			puntata = Integer.parseInt(this.puntataMin);
+		}
+		result.setPuntataMin(puntata);
+		Date data = null;
+		if (!"".equals(this.dataCreazione)) {
+			try {
+				data = new SimpleDateFormat("yyyy-MM-dd").parse(dataCreazione);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		result.setDataCreazione(data);
 		return result;
 	}
 

@@ -30,7 +30,7 @@
 								aria-disabled="${sessionScope.specialPlayerPriviledges}">Gestione Tavoli &raquo;</a></p>
 	    <p><a class="btn btn-primary btn-lg" href="PlayManagementServlet" role="button"  ${sessionScope.playerPriviledges?'disabled':''}
 								aria-disabled="${sessionScope.playerPriviledges}">Gestione Partite &raquo;</a></p>
-	    <p><a class="btn btn-primary btn-lg" href="ListUtentiServlet" role="button"  ${sessionScope.adminPriviledges?'disabled':''}
+	    <p><a class="btn btn-primary btn-lg" href="PrepareSearchUtenteServlet" role="button"  ${sessionScope.adminPriviledges?'disabled':''}
 								aria-disabled="${sessionScope.adminPriviledges}">Gestione Utenti &raquo;</a></p>
 	    </div>    
 	  </div>

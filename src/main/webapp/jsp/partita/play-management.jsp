@@ -26,6 +26,21 @@ body {
 			<div class="container">
 
 				<jsp:include page="../outcome-message.jsp" />
+				
+				<p>
+					<c:set var = "partita" scope = "session" value = "${utente.partita}"/>
+					<c:choose>
+						<c:when test="${not empty partita}">
+							<a class="btn btn-primary btn-lg" href="GoToLastGameServlet&id=${partita.id}"
+								role="button">Vai all'ultima Partita &raquo;</a>
+						</c:when>
+						<c:otherwise>
+							<a class="btn btn-primary btn-lg"
+								href="PrepareSearchPartiteServlet"
+								role="button">Cerca Partite &raquo;</a>
+						</c:otherwise>
+					</c:choose>
+				</p>
 
 				<h4 class="display-3">Esperienza: ${sessionScope.utente.exp}</h4>
 				<h4 class="display-3">Credito: ${sessionScope.utente.credito}</h4>
@@ -49,21 +64,7 @@ body {
 
 				</form>
 
-				<p>
-
-					<c:choose>
-					<c:set var = "partita" scope = "session" value = "${utente.partita}"/>
-						<c:when test="${not empty partita}">
-							<a class="btn btn-primary btn-lg" href="GoToLastGameServlet&id=${partita.id}"
-								role="button">Vai all'ultima Partita &raquo;</a>
-						</c:when>
-						<c:otherwise>
-							<a class="btn btn-primary btn-lg"
-								href="PrepareSearchPartiteServlet"
-								role="button">Cerca Partite &raquo;</a>
-						</c:otherwise>
-					</c:choose>
-				</p>
+				
 			</div>
 		</div>
 

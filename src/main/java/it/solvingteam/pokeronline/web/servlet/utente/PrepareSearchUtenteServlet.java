@@ -1,6 +1,7 @@
-package it.solvingteam.pokeronline.web.servlet.partita;
+package it.solvingteam.pokeronline.web.servlet.utente;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,31 +10,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import it.solvingteam.pokeronline.model.Tavolo;
-import it.solvingteam.pokeronline.service.tavolo.TavoloService;
-import it.solvingteam.pokeronline.util.Utils;
+import it.solvingteam.pokeronline.model.Ruolo;
+import it.solvingteam.pokeronline.model.Utente;
+import it.solvingteam.pokeronline.service.ruolo.RuoloService;
+import it.solvingteam.pokeronline.service.utente.UtenteService;
 
 /**
- * Servlet implementation class GoToLastGameServlet
+ * Servlet implementation class ListUtentiServlet
  */
-@WebServlet("/GoToLastGameServlet")
-public class GoToLastGameServlet extends HttpServlet {
+@WebServlet("/PrepareSearchUtenteServlet")
+public class PrepareSearchUtenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GoToLastGameServlet() {
+    public PrepareSearchUtenteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
     
     @Autowired
-	private TavoloService tavoloService;
+	private RuoloService ruoloService;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -46,22 +47,14 @@ public class GoToLastGameServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String idParam = request.getParameter("id");
-		long id;
-		try {
-			id = Long.valueOf(idParam);
-		} catch (NumberFormatException e) {
-			goBack(request, response);
-			return;
+		Utente.Stato[] values = Utente.Stato.values();
+		String[] stati = new String[values.length];
+		for (int i=0; i < stati.length; i++) {
+			stati[i] = values[i].name();
 		}
-		
-		Tavolo partita = tavoloService.carica(id);
-		if (partita == null) {
-			goBack(request, response);
-			return;
-		}
-		request.setAttribute("partita", partita);
-		request.getRequestDispatcher("jsp/partita/game.jsp").forward(request, response);
+		request.setAttribute("stati", stati);
+		request.setAttribute("ruoli", ruoloService.elenca());
+		request.getRequestDispatcher("jsp/utente/search-utente.jsp").forward(request, response);
 	}
 
 	/**
@@ -70,12 +63,6 @@ public class GoToLastGameServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-	}
-	
-	private void goBack(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Utils.addError(request, "Impossibile accedere alla partita.");
-		request.getRequestDispatcher("jsp/partita/play-management.jsp").forward(request, response);
-		return;
 	}
 
 }
