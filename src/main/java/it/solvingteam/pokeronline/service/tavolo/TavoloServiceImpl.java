@@ -16,6 +16,7 @@ import it.solvingteam.pokeronline.model.Utente;
 import it.solvingteam.pokeronline.repository.TavoloRepository;
 import it.solvingteam.pokeronline.service.generic.GenericServiceImpl;
 import it.solvingteam.pokeronline.service.utente.UtenteService;
+import it.solvingteam.pokeronline.util.Utils;
 
 @Component
 public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements TavoloService {
@@ -57,7 +58,13 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 	
 	@Override
 	public List<Tavolo> findByExample(Tavolo instance) {
-		String base = "from Tavolo t  where 1=1";
+		String base = "SELECT DISTINCT u from Tavolo t ";
+		Set<Utente> giocatori = instance.getGiocatori();
+		boolean giocatoriNotNullNorEmpty = giocatori != null && !giocatori.isEmpty();
+		if (giocatoriNotNullNorEmpty) {
+			base += "JOIN FETCH t.giocatori ";
+		}
+		base += "WHERE 1=1 ";
 		Long id = instance.getId();
 		String nome = instance.getNome();
 		Integer expMin = instance.getExpMin();
@@ -65,7 +72,6 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 		Date dataCreazione = instance.getDataCreazione();
 		Utente proprietario = instance.getProprietario();
 		boolean idNotNull = id != null;
-		boolean nomeNotNull = nome != null;
 		boolean expMinNotNull = expMin != null;
 		boolean puntataMinNotNull = puntataMin != null;
 		boolean dataCreazioneNotNull = dataCreazione != null;
@@ -73,7 +79,7 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 		if (idNotNull) {
 			base += " and t.id = " + id;
 		}
-		if (nomeNotNull) {
+		if (!Utils.isEmptyOrNull(nome)) {
 			base += " and t.nome like '%" + nome + "%'";
 		}
 		if (expMinNotNull) {
@@ -88,9 +94,21 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 		if (proprietarioNotNull) {
 			base += " and t.proprietario = :proprietario";
 		}
+		if (giocatoriNotNullNorEmpty) {
+			for (int i=0; i < giocatori.size(); i++) {
+				base += "AND ?";
+				base+= String.valueOf(1+i);
+				base += " MEMBER OF t.giocatori ";
+			}
+		}
 		TypedQuery<Tavolo> query = entityManager.createQuery(base, Tavolo.class);
 		if (proprietarioNotNull) {
 			query.setParameter("proprietario", proprietario);
+		}
+		if (giocatoriNotNullNorEmpty) {
+			for (int i=0; i < giocatori.size(); i++) {
+				query.setParameter(1+i, giocatori.iterator().next());
+			}
 		}
 		return query.getResultList();
 	}

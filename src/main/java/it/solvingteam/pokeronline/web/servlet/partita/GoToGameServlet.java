@@ -20,14 +20,14 @@ import it.solvingteam.pokeronline.util.Utils;
 /**
  * Servlet implementation class GoToLastGameServlet
  */
-@WebServlet("/GoToLastGameServlet")
-public class GoToLastGameServlet extends HttpServlet {
+@WebServlet("/GoToGameServlet")
+public class GoToGameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GoToLastGameServlet() {
+    public GoToGameServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

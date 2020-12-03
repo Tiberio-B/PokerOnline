@@ -31,7 +31,7 @@ body {
 					<c:set var = "partita" scope = "session" value = "${utente.partita}"/>
 					<c:choose>
 						<c:when test="${not empty partita}">
-							<a class="btn btn-primary btn-lg" href="GoToLastGameServlet&id=${partita.id}"
+							<a class="btn btn-primary btn-lg" href="GoToGameServlet&id=${partita.id}"
 								role="button">Vai all'ultima Partita &raquo;</a>
 						</c:when>
 						<c:otherwise>

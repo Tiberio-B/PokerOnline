@@ -27,29 +27,24 @@
 						<c:set var = "tavolo" scope = "request" value = "${tavoloDTO}"/>
 					
 						<div class="form-row">
-							<div class="form-group col-md">
+							<div class="form-group col-md-3">
 								<label>Nome Tavolo</label>
 								<input type="text" name="nome" id="nome" class="form-control" placeholder="Inserire il nome del tavolo" value="${tavolo.nome}" required>
 							</div>
 							
-							<div class="form-group col-md-2">
+							<div class="form-group col-md-3">
 								<label>Puntata Minima</label>
 								<input type="number" name="puntataMin" id="puntataMin" class="form-control" placeholder="Inserire la puntata minima" value="${tavolo.puntataMin}" required>
 							</div>
 							
-							<div class="form-group col-md-2">
+							<div class="form-group col-md-3">
 								<label>Esperienza Minima</label>
 								<input type="number" name="expMin" id="expMin" class="form-control" placeholder="Inserire l'esperienza minima" value="${tavolo.expMin}" required>
 							</div>
 							
-							<div class="form-group col-md-2">
+							<div class="form-group col-md-3">
 								<label>Data Creazione</label>
 								<input type="date" name="dataCreazione" id="dataCreazione" class="form-control" placeholder="Inserire la data di creazione" value="${tavolo.dataCreazione}" required>
-							</div>
-							
-							<div class="form-group col-md-2">
-								<label>Proprietario</label>
-								<input type="text" name="proprietario" id="proprietario" class="form-control" value="@${sessionScope.utente.username}" disabled readonly>
 							</div>
 							
 						</div>
@@ -58,13 +53,13 @@
 						
 							<div class="form-group col-md-6">
 								<label>Proprietario</label>
-								<select class="browser-default custom-select" name="stato">
+								<select class="browser-default custom-select" name="proprietario">
 								
 								<option value="">Seleziona un proprietario...</option>
 
-								<c:forEach var="proprietario" items="${requestScope.utenti}">
+								<c:forEach var="utente" items="${requestScope.utenti}">
 								
-									<option value="${proprietario.id}">${proprietario.username}</option>
+									<option value="${utente.id}">${utente.username}</option>
 									
 								</c:forEach>
 								
@@ -73,13 +68,13 @@
 							
 							<div class="form-group col-md-6">
 								<label>Partecipante</label>
-								<select class="browser-default custom-select" name="stato">
+								<select class="browser-default custom-select" name="giocatore">
 								
 								<option value="">Seleziona un partecipante...</option>
 
-								<c:forEach var="giocatore" items="${requestScope.utenti}">
+								<c:forEach var="utente" items="${requestScope.utenti}">
 								
-								<option value="${giocatore.id}">${giocatore.username}</option>
+								<option value="${utente.id}">${utente.username}</option>
 									
 								</c:forEach>
 								

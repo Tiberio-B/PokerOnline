@@ -5,7 +5,7 @@
 <html lang="it">
 <head>
 	<jsp:include page="../header.jsp" />
-	<title>Tavoli</title>
+	<title>Partite</title>
 	
 	<!-- style per le pagine diverse dalla index -->
     <link href="./assets/css/global.css" rel="stylesheet">
@@ -18,11 +18,10 @@
 	
 	<jsp:include page="../outcome-message.jsp" />
 		
-		<a class="btn btn-primary" href="PrepareInsertTavoloServlet">Crea nuovo Tavolo</a>
-		<a class="btn btn-primary" href="PrepareSearchTavoloServlet">Cerca Tavoli</a>
+		<a class="btn btn-primary" href="PrepareSearchPartitaServlet">Cerca</a>
 		<div class='card'>
 		    <div class='card-header'>
-		        <h5>Tavoli di ${sessionScope.utente.username}</h5> 
+		        <h5>Partite</h5> 
 		    </div>
 		    
 		        <div class='table-responsive'>
@@ -48,9 +47,7 @@
 		                        <td><c:out value = "${item.puntataMin}"/></td>
 		                        <!-- <td><c:forEach var = "giocatore" items ="item.giocatori"><c:out value = "giocatore.username>"/></c:forEach></td> -->
 		                        <td>
-									<a class="btn  btn-sm btn-outline-secondary" href="ShowTavoloServlet?id=${item.id}">Visualizza</a>
-									<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="PrepareUpdateTavoloServlet?id=${item.id}">Modifica</a>
-									<a class="btn btn-outline-danger btn-sm" href="PrepareDeleteTavoloServlet?id=${item.id}">Rimuovi</a>
+									<a class="btn  btn-sm btn-outline-primary" href="GoToGameServlet?id=${item.id}">Gioca</a>
 								</td>
 		                    </tr>
 		                    </c:forEach>
