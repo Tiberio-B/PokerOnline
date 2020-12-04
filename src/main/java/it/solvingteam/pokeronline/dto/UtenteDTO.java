@@ -77,8 +77,7 @@ public class UtenteDTO {
 		this.checkEmptyOrNull = checkEmptyOrNull;
 	}
 
-	public UtenteDTO(String id, String nome, String cognome, String username, String exp, String credito,
-			String[] idRuoli) {
+	public UtenteDTO(String id, String nome, String cognome, String username, String exp, String credito, String[] idRuoli) {
 		this.id = id;
 		this.nome = nome;
 		this.cognome = cognome;
@@ -92,7 +91,6 @@ public class UtenteDTO {
 		this.checkUsername = true;
 		this.checkCredito = true;
 		this.checkExp = true;
-		this.checkStato = true;
 		this.checkIdRuoli = true;
 	}
 

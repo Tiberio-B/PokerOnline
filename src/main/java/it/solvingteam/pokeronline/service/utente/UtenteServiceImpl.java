@@ -159,13 +159,13 @@ public class UtenteServiceImpl extends GenericServiceImpl<Utente> implements Ute
 		for (String idRuoloParam : utenteDTO.getIdRuoli()) {
 			ruoliUtente.add(ruoloService.carica(Long.valueOf(idRuoloParam)));
 		}
-		utenteOld.setRuoli(ruoliUtente);
 		
 		Utente utenteNew = utenteDTO.buildModel();
 		utenteNew.setId(utenteOld.getId());
 		utenteNew.setPassword(utenteOld.getPassword());
 		utenteNew.setDataRegistrazione(utenteOld.getDataRegistrazione());
-		utenteNew.setRuoli(utenteOld.getRuoli());
+		utenteNew.setStato(Utente.Stato.ATTIVO);
+		utenteNew.setRuoli(ruoliUtente);
 		aggiorna(utenteNew);
 		return utenteNew;
 	}

@@ -66,13 +66,13 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String exp = request.getParameter("exp");
 		String credito = request.getParameter("credito");
-		String[] idRuoliParams = request.getParameterValues("ruoli");
+		String[] idRuoliParams = request.getParameterValues("ruoliId");
 		UtenteDTO utenteDTO = new UtenteDTO(idParam, nome, cognome, username, exp, credito, idRuoliParams);
 		
 		List<String> errors = utenteDTO.errors();
 		if (!errors.isEmpty()) { // se errori validazione, reindirizza in pagina con errori appropriati
 			Utils.addErrors(request, errors);
-			
+			goBack(request, response, utenteDTO);
 			return;
 		}
 		
@@ -82,6 +82,7 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 		} catch (Exception e) {
 			Utils.addError(request, "Impossibile modificare i ruoli dell'utente");
 			goBack(request, response, utenteDTO);
+			return;
 		}
 		
 		if (utenteNew != null) {
@@ -89,6 +90,7 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 		} else {
 			Utils.addError(request, "Impossibile modificare l'utente");
 			goBack(request, response, utenteDTO);
+			return;
 		}
 		
 		request.setAttribute("utenti", utenteService.elenca());

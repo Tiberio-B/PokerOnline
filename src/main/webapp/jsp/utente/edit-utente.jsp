@@ -27,7 +27,7 @@
 					
 						<c:set var = "utente" scope = "request" value = "${utenteDTO}"/>
 					
-						<div class="form-row">
+					<div class="form-row">
 						
 							<input type="hidden" name="id" id="id" value="${requestScope.id}">
 							
@@ -49,6 +49,21 @@
 					</div>
 
 					<div class="form-row">
+					
+							<div class="form-group col-md-3">
+								<label>Esperienza</label>
+								<input type="number" name="exp" id="exp" class="form-control" placeholder="Inserire l'esperienza" value="${utente.exp}" required>
+							</div>
+							
+							<div class="form-group col-md-3">
+								<label>Credito</label>
+								<input type="number" name="credito" id="credito" class="form-control" placeholder="Inserire il credito" value="${utente.credito}" required>
+							</div>
+					
+							<div class="form-group col-md-3">
+								<label>Stato</label>
+								<input type="text" name="stato" id="stato" class="form-control" placeholder="Inserire lo stato" value="${utente.stato}" disabled readonly>
+							</div>
 							
 							<!-- 
 							<div class="form-group col-md-6">
@@ -66,7 +81,7 @@
 						</div>
 						 -->
 						
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-3">
 							<label>Ruolo Utente</label> 
 
 								<c:forEach var="ruolo" items="${requestScope.ruoli}">

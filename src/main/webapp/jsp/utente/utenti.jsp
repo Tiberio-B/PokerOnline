@@ -33,7 +33,6 @@
 		                        <th>Esperienza</th>
 		                        <th>Credito</th>
 		                        <th>Stato</th>
-		                        <th>Ruolo</th>
 		                        <th>Data Registrazione</th>
 		                        <th>Azioni</th>
 		                    </tr>
@@ -48,9 +47,7 @@
 		                        <td><c:out value = "${item.exp}"/></td>
 		                        <td><c:out value = "${item.credito}"/></td>
 		                        <td><c:out value = "${item.stato}"/></td>
-		                        <td><c:out value = "RUOLO"/></td>
 		                        <td><c:out value = "${item.dataRegistrazione}"/></td>
-		                        <!-- <td><c:forEach var = "giocatore" items ="item.giocatori"><c:out value = "giocatore.username>"/></c:forEach></td> -->
 		                        <td>
 									<a class="btn  btn-sm btn-outline-secondary" href="ShowUtenteServlet?id=${item.id}">Visualizza</a>
 									<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="PrepareUpdateUtenteServlet?id=${item.id}">Modifica</a>
