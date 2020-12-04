@@ -28,9 +28,6 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 	
 	@Autowired
 	private UtenteService utenteService;
-	
-	@Autowired
-	private RuoloService ruoloService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -59,7 +56,6 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		boolean checkEmptyOrNull = true; // in modifica, i campi vuoti o null non sono ammessi
 		String idParam = request.getParameter("id");
 		String nome = request.getParameter("nome");
 		String cognome = request.getParameter("cognome");
@@ -67,7 +63,8 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 		String exp = request.getParameter("exp");
 		String credito = request.getParameter("credito");
 		String[] idRuoliParams = request.getParameterValues("ruoliId");
-		UtenteDTO utenteDTO = new UtenteDTO(idParam, nome, cognome, username, exp, credito, idRuoliParams);
+		boolean checkRuoli = idRuoliParams != null;
+		UtenteDTO utenteDTO = new UtenteDTO(idParam, nome, cognome, username, exp, credito, idRuoliParams, checkRuoli);
 		
 		List<String> errors = utenteDTO.errors();
 		if (!errors.isEmpty()) { // se errori validazione, reindirizza in pagina con errori appropriati
@@ -78,21 +75,14 @@ public class ExecuteUpdateUtenteServlet extends HttpServlet {
 		
 		Utente utenteNew = null;
 		try {
-			utenteNew = utenteService.aggiornaConRuoli(utenteDTO);
+			utenteNew = utenteService.aggiorna(utenteDTO, checkRuoli);
 		} catch (Exception e) {
-			Utils.addError(request, "Impossibile modificare i ruoli dell'utente");
-			goBack(request, response, utenteDTO);
-			return;
-		}
-		
-		if (utenteNew != null) {
-			request.setAttribute("successMessage", "Aggiornamento effettuato con successo.");
-		} else {
 			Utils.addError(request, "Impossibile modificare l'utente");
 			goBack(request, response, utenteDTO);
 			return;
 		}
 		
+		request.setAttribute("successMessage", "Aggiornamento effettuato con successo.");
 		request.setAttribute("utenti", utenteService.elenca());
 		request.getRequestDispatcher("/jsp/utente/utenti.jsp").forward(request, response);
 	}

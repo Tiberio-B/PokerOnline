@@ -80,6 +80,8 @@
 							</select>
 						</div>
 						 -->
+						 
+						 <c:if test="${utente.stato == 'CREATO'}">
 						
 						<div class="form-group col-md-3">
 							<label>Ruolo Utente</label> 
@@ -90,6 +92,8 @@
 									<label for="ruoliId"> ${ruolo.codice}</label>
 								</c:forEach>
 						</div>
+						
+						</c:if>
 							
 						</div>
 							

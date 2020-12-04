@@ -22,6 +22,6 @@ public interface UtenteService extends GenericService<Utente> {
 	
 	Utente attiva(Long id);
 
-	Utente aggiornaConRuoli(UtenteDTO utenteDTO) throws Exception;
+	Utente aggiorna(UtenteDTO utenteDTO, boolean aggiornaRuoli) throws Exception;
 
 }

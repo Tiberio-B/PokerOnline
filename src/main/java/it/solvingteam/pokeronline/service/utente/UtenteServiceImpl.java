@@ -146,13 +146,15 @@ public class UtenteServiceImpl extends GenericServiceImpl<Utente> implements Ute
 	}
 
 	@Override
-	public Utente aggiornaConRuoli(UtenteDTO utenteDTO) throws Exception {
+	public Utente aggiorna(UtenteDTO utenteDTO, boolean aggiornaRuoli) throws Exception {
 		Utente utenteOld = caricaConRuoli(Long.valueOf(utenteDTO.getId()));
 		
-		if (utenteOld != null) {
-			boolean forbidRolesUpdate = utenteOld.getStato() != Utente.Stato.CREATO && !(Utils.isEmptyOrNull(utenteDTO.getIdRuoli()));
-			if (forbidRolesUpdate) {
-				throw new Exception("Impossibile modificare i ruoli dell'utente");
+		if (aggiornaRuoli) {
+			if (utenteOld != null) {
+				boolean forbidRolesUpdate = utenteOld.getStato() != Utente.Stato.CREATO && !(Utils.isEmptyOrNull(utenteDTO.getIdRuoli()));
+				if (forbidRolesUpdate) {
+					throw new Exception("Impossibile modificare i ruoli dell'utente");
+				}
 			}
 		}
 		Set<Ruolo> ruoliUtente = new HashSet<>();
