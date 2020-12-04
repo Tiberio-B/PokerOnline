@@ -6,7 +6,7 @@
 	<title>Crea un Tavolo</title>
 	
 	<!-- style per le pagine diverse dalla index -->
-    <link href="./assets/css/global.css" rel="stylesheet">
+    <link href="../assets/css/global.css" rel="stylesheet">
     
 </head>
 <body>
@@ -22,7 +22,7 @@
 		    </div>
 		    <div class='card-body'>
 
-					<form method="post" action="ExecuteInsertTavoloServlet" novalidate="novalidate">
+					<form method="post" action="/tavolo/ExecuteInsertTavoloServlet" novalidate="novalidate">
 					
 						<c:set var = "tavolo" scope = "request" value = "${tavoloDTO}"/>
 					
@@ -49,7 +49,7 @@
 							
 							<div class="form-group col-md-2">
 								<label>Proprietario</label>
-								<input type="text" name="proprietario" id="proprietario" class="form-control" value="@${sessionScope.utente.username}" disabled readonly>
+								<input type="text" name="proprietario" id="proprietario" class="form-control" value="@${requestScope.proprietario}" disabled readonly>
 							</div>
 							
 						</div>

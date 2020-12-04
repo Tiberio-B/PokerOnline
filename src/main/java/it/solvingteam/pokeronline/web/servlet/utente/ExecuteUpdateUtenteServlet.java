@@ -14,41 +14,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import it.solvingteam.pokeronline.dto.UtenteDTO;
-import it.solvingteam.pokeronline.model.Tavolo;
 import it.solvingteam.pokeronline.model.Utente;
-import it.solvingteam.pokeronline.service.tavolo.TavoloService;
+import it.solvingteam.pokeronline.service.ruolo.RuoloService;
 import it.solvingteam.pokeronline.service.utente.UtenteService;
 import it.solvingteam.pokeronline.util.Utils;
 
 /**
- * Servlet implementation class ExecuteSearchTavoloServlet
+ * Servlet implementation class ExecuteUpdateTavoloServlet
  */
-@WebServlet("/utente/ExecuteSearchUtenteServlet")
-public class ExecuteSearchUtenteServlet extends HttpServlet {
+@WebServlet("/utente/ExecuteUpdateUtenteServlet")
+public class ExecuteUpdateUtenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	private UtenteService utenteService;
+	
+	@Autowired
+	private RuoloService ruoloService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExecuteSearchUtenteServlet() {
+    public ExecuteUpdateUtenteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
     
-    @Autowired
-	private UtenteService utenteService;
-
-	@Override
+    @Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 	}
 
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		
 	}
 
 	/**
@@ -56,43 +59,46 @@ public class ExecuteSearchUtenteServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		boolean checkEmptyOrNull = true; // in modifica, i campi vuoti o null non sono ammessi
+		String idParam = request.getParameter("id");
 		String nome = request.getParameter("nome");
 		String cognome = request.getParameter("cognome");
 		String username = request.getParameter("username");
-		String credito = request.getParameter("credito");
 		String exp = request.getParameter("exp");
-		String dataRegistrazione = request.getParameter("dataRegistrazione");
-		String stato = request.getParameter("stato");
-		String ruoloId = request.getParameter("ruoloId");
-		
-		boolean checkEmptyOrNull = false; // in ricerca, i campi vuoti o null sono ammessi
-		UtenteDTO utenteDTO = new UtenteDTO(nome, cognome, username, credito, exp, dataRegistrazione, stato, ruoloId, checkEmptyOrNull);
+		String credito = request.getParameter("credito");
+		String[] idRuoliParams = request.getParameterValues("ruoli");
+		UtenteDTO utenteDTO = new UtenteDTO(idParam, nome, cognome, username, exp, credito, idRuoliParams);
 		
 		List<String> errors = utenteDTO.errors();
 		if (!errors.isEmpty()) { // se errori validazione, reindirizza in pagina con errori appropriati
 			Utils.addErrors(request, errors);
-			goBack(request, response);
+			
 			return;
 		}
 		
-		Utente instance = utenteDTO.buildModel();
-		
-		List<Utente> utenti = utenteService.findByExample(instance);
-		if (utenti.isEmpty()) {
-			Utils.addError(request, "Nessun utente soddisfa i parametri della ricerca.");
-			goBack(request, response);
-			return;
+		Utente utenteNew = null;
+		try {
+			utenteNew = utenteService.aggiornaConRuoli(utenteDTO);
+		} catch (Exception e) {
+			Utils.addError(request, "Impossibile modificare i ruoli dell'utente");
+			goBack(request, response, utenteDTO);
 		}
 		
-		request.setAttribute("utenti", utenti);
+		if (utenteNew != null) {
+			request.setAttribute("successMessage", "Aggiornamento effettuato con successo.");
+		} else {
+			Utils.addError(request, "Impossibile modificare l'utente");
+			goBack(request, response, utenteDTO);
+		}
+		
+		request.setAttribute("utenti", utenteService.elenca());
 		request.getRequestDispatcher("/jsp/utente/utenti.jsp").forward(request, response);
 	}
-	
-	private void goBack(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-    	String[] paramNames = new String[]{"tavoloDTO"};
-    	Utils.sendParamsBack(request, paramNames);
-    	request.getRequestDispatcher("/jsp/tavolo/search-tavolo.jsp").forward(request, response);
-    }
+
+	private void goBack(HttpServletRequest request, HttpServletResponse response, UtenteDTO utenteDTO) throws ServletException, IOException {
+		request.setAttribute("utenteDTO", utenteDTO);
+		request.setAttribute("id", utenteDTO.getId());
+		request.getRequestDispatcher("/jsp/utente/edit-utente.jsp").forward(request, response);	
+	}
 
 }

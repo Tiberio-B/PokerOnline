@@ -1,23 +1,24 @@
 package it.solvingteam.pokeronline.service.utente;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.solvingteam.pokeronline.dto.UtenteDTO;
 import it.solvingteam.pokeronline.model.Ruolo;
-import it.solvingteam.pokeronline.model.Tavolo;
 import it.solvingteam.pokeronline.model.Utente;
 import it.solvingteam.pokeronline.repository.UtenteRepository;
 import it.solvingteam.pokeronline.service.generic.GenericServiceImpl;
+import it.solvingteam.pokeronline.service.ruolo.RuoloService;
+import it.solvingteam.pokeronline.util.Utils;
 
 @Component
 public class UtenteServiceImpl extends GenericServiceImpl<Utente> implements UtenteService {
@@ -27,6 +28,9 @@ public class UtenteServiceImpl extends GenericServiceImpl<Utente> implements Ute
 	
 	@Autowired
 	private UtenteRepository utenteRepository;
+	
+	@Autowired
+	private RuoloService ruoloService;
 
 	@Override
 	public UtenteRepository getRepository() {
@@ -61,7 +65,7 @@ public class UtenteServiceImpl extends GenericServiceImpl<Utente> implements Ute
 
 	@Override
 	public List<Utente> findByExample(Utente instance) {
-		String base = "from Utente u join fetch Ruolo r where 1=1";
+		String base = "SELECT DISTINCT u FROM Utente u LEFT JOIN FETCH Ruolo r WHERE 1=1";
 		Long id = instance.getId();
 		String nome = instance.getNome();
 		String cognome = instance.getCognome();
@@ -78,46 +82,92 @@ public class UtenteServiceImpl extends GenericServiceImpl<Utente> implements Ute
 			}
 		}
 		boolean idNotNull = id != null;
-		boolean nomeNotNull = nome != null;
-		boolean cognomeNotNull = cognome != null;
-		boolean usernameNotNull = username != null;
-		boolean passwordNotNull = password != null;
 		boolean expNotNull = exp != null;
 		boolean creditoNotNull = credito != null;
 		boolean dataRegistrazioneNotNull = dataRegistrazione != null;
 		boolean statoNotNull = stato != null;
 		boolean idRuoloNotNull = idRuolo != null;
 		if (idNotNull) {
-			base += " and u.id = " + id;
+			base += " AND u.id = " + id;
 		}
-		if (nomeNotNull) {
-			base += " and u.nome like '%" + nome + "%' ";
+		if (!Utils.isEmptyOrNull(nome)) {
+			base += " AND u.nome like '%" + nome + "%' ";
 		}
-		if (cognomeNotNull) {
-			base += " and u.cognome like '%" + cognome + "%' ";
+		if (!Utils.isEmptyOrNull(cognome)) {
+			base += " AND u.cognome like '%" + cognome + "%' ";
 		}
-		if (usernameNotNull) {
-			base += " and u.username like '%" + username + "%' ";
+		if (!Utils.isEmptyOrNull(username)) {
+			base += " AND u.username like '%" + username + "%' ";
 		}
-		if (passwordNotNull) {
-			base += " and u.password like '%" + password + "%' ";
+		if (!Utils.isEmptyOrNull(password)) {
+			base += " AND u.password like '%" + password + "%' ";
 		}
 		if (expNotNull) {
-			base += " and u.exp = " + exp;
+			base += " AND u.exp = " + exp;
 		}
 		if (creditoNotNull) {
-			base += " and u.credito = " + credito;
+			base += " AND u.credito = " + credito;
 		}
 		if (dataRegistrazioneNotNull) {
-			base += " and u.dataRegistrazione = " + dataRegistrazione;
+			base += " AND u.dataRegistrazione = " + dataRegistrazione;
 		}
 		if (statoNotNull) {
-			base += " and u.stato = " + stato;
+			base += " AND u.stato = " + stato;
 		}
 		if (idRuoloNotNull) {
-			base += " and r.id = " + idRuolo;
+			base += " AND r.id = " + idRuolo;
 		}
 		return entityManager.createQuery(base, Utente.class).getResultList();
+	}
+
+	@Override
+	public Utente caricaConRuoli(Long id) {
+		return utenteRepository.findByIdFetchRuoli(id);
+	}
+	
+	@Override
+	public Utente disattiva(Long id) {
+		Utente utente = carica(id);
+		if (utente != null) {
+			utente.setStato(Utente.Stato.INATTIVO);
+			aggiorna(utente);
+		}
+		return utente;
+	}
+	
+	@Override
+	public Utente attiva(Long id) {
+		Utente utente = carica(id);
+		if (utente != null) {
+			utente.setStato(Utente.Stato.ATTIVO);
+			aggiorna(utente);
+		}
+		return utente;
+	}
+
+	@Override
+	public Utente aggiornaConRuoli(UtenteDTO utenteDTO) throws Exception {
+		Utente utenteOld = caricaConRuoli(Long.valueOf(utenteDTO.getId()));
+		
+		if (utenteOld != null) {
+			boolean forbidRolesUpdate = utenteOld.getStato() != Utente.Stato.CREATO && !(Utils.isEmptyOrNull(utenteDTO.getIdRuoli()));
+			if (forbidRolesUpdate) {
+				throw new Exception("Impossibile modificare i ruoli dell'utente");
+			}
+		}
+		Set<Ruolo> ruoliUtente = new HashSet<>();
+		for (String idRuoloParam : utenteDTO.getIdRuoli()) {
+			ruoliUtente.add(ruoloService.carica(Long.valueOf(idRuoloParam)));
+		}
+		utenteOld.setRuoli(ruoliUtente);
+		
+		Utente utenteNew = utenteDTO.buildModel();
+		utenteNew.setId(utenteOld.getId());
+		utenteNew.setPassword(utenteOld.getPassword());
+		utenteNew.setDataRegistrazione(utenteOld.getDataRegistrazione());
+		utenteNew.setRuoli(utenteOld.getRuoli());
+		aggiorna(utenteNew);
+		return utenteNew;
 	}
 
 }

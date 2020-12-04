@@ -9,27 +9,26 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="LoginServlet">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="HomepageServlet">Home <span class="sr-only">(current)</span></a>
       </li>
       
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
-        <a class="dropdown-item" href="LoginServlet">Accedi</a>
-          <!-- <a class="dropdown-item" href="ListLibriServlet">Tutti i Libri</a>  
-          <a class="dropdown-item" href="ListAutoriServlet">Tutte gli Autori</a> -->
-          <a class="dropdown-item" href="PrepareSearchLibroServlet">Cerca Libro</a>
-          <a class="dropdown-item" href="PrepareSearchAutoreServlet">Cerca Autore</a>
-          <c:if test="${sessionScope.utente.isAdmin()}">
-          <a class="dropdown-item" href="PrepareSearchUtenteServlet">Gestione Utente</a>
+          <a class="dropdown-item" href="PrepareSearchTavoloServlet">Gestione Tavoli</a>
+          <a class="dropdown-item" href="PlayManagementServlet">Gestione Partite</a>
+          <c:if test="${sessionScope.adminPriviledges}">
+          <a class="dropdown-item" href="PrepareSearchUtenteServlet">Gestione Utenti</a>
           </c:if>
-           <!-- <a class="dropdown-item" href="LogoutServlet">Logout</a>  -->
         </div>
       </li>
       
-      <c:if test="${requestScope.utente != null}">
+      <c:if test="${sessionScope.utente != null}">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${sessionScope.utente}</a>
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        ${sessionScope.utente.nome} ${sessionScope.utente.cognome} <br/>
+        @${sessionScope.utente.username}
+        </a>
         <div class="dropdown-menu" aria-labelledby="dropdown02">
           <a class="dropdown-item" href="LogoutServlet">Logout</a>
         </div>
@@ -37,5 +36,10 @@
       </c:if>
     
     </ul>
+   
   </div>
+  
+   
+  
+  
 </nav>

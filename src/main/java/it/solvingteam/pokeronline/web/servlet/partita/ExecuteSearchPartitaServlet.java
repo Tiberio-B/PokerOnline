@@ -25,7 +25,7 @@ import it.solvingteam.pokeronline.util.Utils;
 /**
  * Servlet implementation class ExecuteSearchTavoloServlet
  */
-@WebServlet("/ExecuteSearchPartitaServlet")
+@WebServlet("/partita/ExecuteSearchPartitaServlet")
 public class ExecuteSearchPartitaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -80,31 +80,36 @@ public class ExecuteSearchPartitaServlet extends HttpServlet {
 			return;
 		}
 		
-		Utente proprietario = utenteService.carica(proprietarioId);
-		Utente giocatore = utenteService.carica(giocatoreId);
-		
 		Tavolo instance = tavoloDTO.buildModel();
-		instance.setProprietario(proprietario);
-		Set<Utente> giocatori = new HashSet<>();
-		giocatori.add(giocatore);
-		instance.setGiocatori(giocatori);
+		
+		if (proprietarioId != null) {
+			instance.setProprietario(utenteService.carica(proprietarioId));
+		}
+		
+		if (giocatoreId != null) {
+			@SuppressWarnings("serial")
+			Set<Utente> giocatori = new HashSet<Utente>() {{
+				   add(utenteService.carica(giocatoreId));
+				}};
+			instance.setGiocatori(giocatori);
+		}
 		
 		List<Tavolo> tavoli = tavoloService.findByExample(instance);
 		if (tavoli.isEmpty()) {
-			Utils.addError(request, "Nessun tavolo soddisfa i parametri della ricerca.");
+			Utils.addError(request, "Nessuna partita soddisfa i parametri della ricerca.");
 			sendBack(request, response, tavoloDTO);
 			return;
 		}
 		
 		request.setAttribute("tavoli", tavoli);
-		request.getRequestDispatcher("jsp/partita/partire.jsp").forward(request, response);
-		
+		request.getRequestDispatcher("/jsp/partita/partite.jsp").forward(request, response);
 	}
 	
 	private void sendBack(HttpServletRequest request, HttpServletResponse response, TavoloDTO tavoloDTO) throws ServletException, IOException {
     	
+		request.setAttribute("utenti", utenteService.elenca());
     	request.setAttribute("tavoloDTO", tavoloDTO);
-    	request.getRequestDispatcher("jsp/tavolo/search-tavolo.jsp").forward(request, response);
+    	request.getRequestDispatcher("/jsp/partita/search-partita.jsp").forward(request, response);
     }
 
 }

@@ -12,7 +12,7 @@ import it.solvingteam.pokeronline.util.Utils;
 /**
  * Servlet implementation class FormTavoloServlet
  */
-@WebServlet("/FormTavoloServlet")
+@WebServlet("/tavolo/FormTavoloServlet")
 public class FormTavoloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -28,16 +28,27 @@ public class FormTavoloServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = request.getParameter("action");
-
-		if ("PrepareInsertTavoloServlet".equals(action)) {
-			request.getRequestDispatcher("PrepareInsertTavoloServlet").forward(request, response);
-		} else if ("ExecuteSearchTavoloServlet".equals(action)) {
-			request.getRequestDispatcher("ExecuteSearchTavoloServlet").forward(request, response);
-		} else {
-			Utils.addError(request, "Destinazione specificata non valida.");
-			request.getRequestDispatcher("jsp/home.jsp").forward(request, response);
+		
+		final String searchTavoloServletPath = "ExecuteSearchTavoloServlet";
+		final String insertTavoloServletPath = "PrepareInsertTavoloServlet";
+		
+		switch (request.getParameter("action")) {
+		
+			case searchTavoloServletPath: {
+				request.getRequestDispatcher(searchTavoloServletPath).forward(request, response);
+				break;
+			}
+			case insertTavoloServletPath: {
+				request.getRequestDispatcher(insertTavoloServletPath).forward(request, response);
+				break;
+			}
+			default: {
+				Utils.addError(request, "Destinazione specificata non valida.");
+				request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
+				break;
+			}
 		}
+		return;
 	}
 
 	/**

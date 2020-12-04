@@ -29,15 +29,24 @@ public class SignInServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String action = request.getParameter("action");
-
-		if ("LogInServlet".equals(action)) {
-			request.getRequestDispatcher("LogInServlet").forward(request, response);
-		} else if ("PrepareInsertUtenteServlet".equals(action)) {
-			request.getRequestDispatcher("PrepareInsertUtenteServlet").forward(request, response);
-		} else {
-			Utils.addError(request, "Destinazione specificata non valida.");
-			request.getRequestDispatcher("jsp/home.jsp").forward(request, response);
+		final String logInServletPath = "LogInServlet";
+		final String insertUtenteServletPath = "PrepareInsertUtenteServlet";
+		
+		switch (request.getParameter("action")) {
+		
+			case logInServletPath: {
+				request.getRequestDispatcher(logInServletPath).forward(request, response);
+				return;
+			}
+			case insertUtenteServletPath: {
+				request.getRequestDispatcher(insertUtenteServletPath).forward(request, response);
+				return;
+			}
+			default: {
+				Utils.addError(request, "Destinazione specificata non valida.");
+				request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
+				return;
+			}
 		}
 	}
 

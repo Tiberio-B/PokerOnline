@@ -25,9 +25,15 @@ import it.solvingteam.pokeronline.util.Utils;
 /**
  * Servlet implementation class ExecuteSearchTavoloServlet
  */
-@WebServlet("/ExecuteInsertTavoloServlet")
+@WebServlet("/tavolo/ExecuteInsertTavoloServlet")
 public class ExecuteInsertTavoloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	private TavoloService tavoloService;
+    
+    @Autowired
+	private UtenteService utenteService;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -36,12 +42,6 @@ public class ExecuteInsertTavoloServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
-    @Autowired
-	private TavoloService tavoloService;
-    
-    @Autowired
-	private UtenteService utenteService;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -73,7 +73,7 @@ public class ExecuteInsertTavoloServlet extends HttpServlet {
 		if (!errors.isEmpty()) { // se errori validazione, reindirizza in pagina con errori appropriati
 			Utils.addErrors(request, errors);
 			request.setAttribute("tavoloDTO", tavoloDTO);
-			request.getRequestDispatcher("jsp/tavolo/insert-tavolo.jsp").forward(request, response);
+			request.getRequestDispatcher("/jsp/tavolo/insert-tavolo.jsp").forward(request, response);
 			return;
 		}
 		
@@ -87,7 +87,7 @@ public class ExecuteInsertTavoloServlet extends HttpServlet {
 		
 		request.setAttribute("tavoli", tavoloService.elenca());
 		
-		request.getRequestDispatcher("jsp/tavolo/tavoli.jsp").forward(request, response);	
+		request.getRequestDispatcher("/jsp/tavolo/tavoli.jsp").forward(request, response);	
 	}
 
 }

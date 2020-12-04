@@ -11,12 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import it.solvingteam.pokeronline.dto.TavoloDTO;
+import it.solvingteam.pokeronline.model.Utente;
 import it.solvingteam.pokeronline.util.Utils;
 
 /**
  * Servlet implementation class PrepareInsertTavoloServlet
  */
-@WebServlet("/PrepareInsertTavoloServlet")
+@WebServlet("/tavolo/PrepareInsertTavoloServlet")
 public class PrepareInsertTavoloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,7 +42,8 @@ public class PrepareInsertTavoloServlet extends HttpServlet {
     	boolean checkEmptyOrNull = false; // nel passaggio dei parametri tra viste, i controlli non sono necessari
     	TavoloDTO tavoloDTO = new TavoloDTO(nome, puntataMin, expMin, dataCreazione, checkEmptyOrNull);
     	request.setAttribute("tavoloDTO", tavoloDTO);
-    	request.getRequestDispatcher("jsp/tavolo/insert-tavolo.jsp").forward(request, response);
+    	request.setAttribute("proprietario", ((Utente) request.getSession().getAttribute("utente")).getUsername());
+    	request.getRequestDispatcher("/jsp/tavolo/insert-tavolo.jsp").forward(request, response);
 	}
 
 	/**

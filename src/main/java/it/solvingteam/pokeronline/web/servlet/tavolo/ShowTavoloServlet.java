@@ -1,4 +1,4 @@
-package it.solvingteam.pokeronline.web.servlet.partita;
+package it.solvingteam.pokeronline.web.servlet.tavolo;
 
 import java.io.IOException;
 
@@ -12,28 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import it.solvingteam.pokeronline.dto.TavoloDTO;
 import it.solvingteam.pokeronline.model.Tavolo;
-import it.solvingteam.pokeronline.model.Utente;
 import it.solvingteam.pokeronline.service.tavolo.TavoloService;
 import it.solvingteam.pokeronline.util.Utils;
 
 /**
- * Servlet implementation class GoToLastGameServlet
+ * Servlet implementation class ShowTavoloServlet
  */
-@WebServlet("/partita/GoToGameServlet")
-public class GoToGameServlet extends HttpServlet {
+@WebServlet("/tavolo/ShowTavoloServlet")
+public class ShowTavoloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GoToGameServlet() {
+    public ShowTavoloServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
     
     @Autowired
 	private TavoloService tavoloService;
+    
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -52,26 +53,16 @@ public class GoToGameServlet extends HttpServlet {
 			return;
 		}
 		
-		Tavolo partita = tavoloService.carica(id);
-		if (partita == null) {
-			Utils.addError(request, "Impossibile accedere alla partita.");
+		Tavolo tavolo = tavoloService.carica(id);
+		if (tavolo == null) {
+			Utils.addError(request, "Impossibile accedere al tavolo.");
 			goBack(request, response);
 			return;
 		}
 		
-		Utente utente = (Utente) request.getSession().getAttribute("utente");
-		if (utente.getExp() < partita.getExpMin()) {
-			Utils.addError(request, "Non si dispone dell'esperienza sufficiente per accedere alla partita.");
-			goBack(request, response);
-		}
-		
-		if (utente.getCredito() < partita.getPuntataMin()) {
-			Utils.addError(request, "Non si dispone del credito sufficiente per accedere alla partita.");
-			goBack(request, response);
-		}
-			
-		request.setAttribute("partita", partita);
-		request.getRequestDispatcher("/jsp/partita/game.jsp").forward(request, response);
+		request.setAttribute("tavoloDTO", new TavoloDTO().buildDtoFrom(tavolo));
+		request.setAttribute("tavoloDTO", new TavoloDTO().buildDtoFrom(tavolo));
+		request.getRequestDispatcher("/jsp/tavolo/show-tavolo.jsp").forward(request, response);
 	}
 
 	/**
@@ -83,8 +74,7 @@ public class GoToGameServlet extends HttpServlet {
 	}
 	
 	private void goBack(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/jsp/partita/play-management.jsp").forward(request, response);
-		return;
+		request.getRequestDispatcher("PrepareSearchTavoloServlet").forward(request, response);
 	}
 
 }

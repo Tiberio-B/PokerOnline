@@ -58,7 +58,7 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 	
 	@Override
 	public List<Tavolo> findByExample(Tavolo instance) {
-		String base = "SELECT DISTINCT u from Tavolo t ";
+		String base = "SELECT DISTINCT t from Tavolo t ";
 		Set<Utente> giocatori = instance.getGiocatori();
 		boolean giocatoriNotNullNorEmpty = giocatori != null && !giocatori.isEmpty();
 		if (giocatoriNotNullNorEmpty) {
@@ -116,6 +116,16 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 	@Override
 	public List<Tavolo> elencaConGiocatori() {
 		return tavoloRepository.findAllFetchGiocatori();
+	}
+
+	@Override
+	public Tavolo caricaConGiocatori(Long id) {
+		return tavoloRepository.findByIdFetchGiocatori(id);
+	}
+
+	@Override
+	public Tavolo caricaConProprietarioEGiocatori(Long id) {
+		return tavoloRepository.findByIdFetchProprietarioAndGiocatori(id);
 	}
 
 }

@@ -23,10 +23,16 @@ import it.solvingteam.pokeronline.util.Utils;
 /**
  * Servlet implementation class ExecuteSearchTavoloServlet
  */
-@WebServlet("/ExecuteSearchTavoloServlet")
+@WebServlet("/tavolo/ExecuteSearchTavoloServlet")
 public class ExecuteSearchTavoloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@Autowired
+	private TavoloService tavoloService;
+    
+    @Autowired
+	private UtenteService utenteService;
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,12 +40,6 @@ public class ExecuteSearchTavoloServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
-    @Autowired
-	private TavoloService tavoloService;
-    
-    @Autowired
-	private UtenteService utenteService;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -88,14 +88,14 @@ public class ExecuteSearchTavoloServlet extends HttpServlet {
 		}
 		
 		request.setAttribute("tavoli", tavoli);
-		request.getRequestDispatcher("jsp/tavolo/tavoli.jsp").forward(request, response);
-		
+		request.getRequestDispatcher("/jsp/tavolo/tavoli.jsp").forward(request, response);
 	}
 	
 	private void sendBack(HttpServletRequest request, HttpServletResponse response, TavoloDTO tavoloDTO) throws ServletException, IOException {
     	
     	request.setAttribute("tavoloDTO", tavoloDTO);
-    	request.getRequestDispatcher("jsp/tavolo/search-tavolo.jsp").forward(request, response);
+    	request.setAttribute("proprietario", request.getParameter("proprietario"));
+    	request.getRequestDispatcher("/jsp/tavolo/search-tavolo.jsp").forward(request, response);
     }
 
 }

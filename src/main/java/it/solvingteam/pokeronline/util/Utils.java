@@ -136,7 +136,7 @@ public class Utils {
 		request.setAttribute("errorMessages", attr);
 	}
 	
-	public static void sendParamsBack(HttpServletRequest request, String[] paramNames) {
+	public static void sendParamsBack(HttpServletRequest request, String... paramNames) {
 		for (String paramName : paramNames) {
 			request.setAttribute(paramName, request.getParameter(paramName));
 		}
@@ -151,13 +151,27 @@ public class Utils {
 		return dateToString(date, pattern);
 	}
 	
+	public static String dateToString(String dateString) {
+		return new SimpleDateFormat("dd-MM-yyyy").format(dateString);
+	}
+	
 	public static boolean isEmptyOrNull(Object o) {
 		boolean ret = false;
 		if (o == null) { return true; };
 		if ("".equals(o)) { return true; }
 		if (o instanceof List) { return ((List<?>) o).isEmpty(); }
 		if (o instanceof Set) { return ((Set<?>) o).isEmpty(); }
+		if (o instanceof Object[]) { return ((Object[]) o).length == 0; }
 		return ret;
+	}
+	
+	public static <E extends Enum<E>> String[] toStringArray(Enum<E>[] enumArray) {
+		String[] ret = new String[enumArray.length];
+		for (int i=0; i < ret.length; i++) {
+			ret[i] = enumArray[i].name();
+		}
+		return ret;
+		
 	}
 
 }

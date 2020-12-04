@@ -45,35 +45,6 @@ public class UtenteDTO {
 	private String[] idTavoli;
 	
 	public UtenteDTO() {};
-	
-	public UtenteDTO(String id, String nome, String cognome, String username, String password,
-			String dataRegistrazione, String stato, String exp, String credito, String idPartita,
-			String[] idRuoli, String[] idTavoli) {
-		this.id = id;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.username = username;
-		this.password = password;
-		this.dataRegistrazione = dataRegistrazione;
-		this.stato = stato;
-		this.exp = exp;
-		this.credito = credito;
-		this.idPartita = idPartita;
-		this.idRuoli = idRuoli;
-		this.idTavoli = idTavoli;
-		this.checkId = true;
-		this.checkNome = true;
-		this.checkCognome = true;
-		this.checkUsername = true;
-		this.checkPassword = true;
-		this.checkDataRegistrazione = true;
-		this.checkStato = true;
-		this.checkExp = true;
-		this.checkCredito = true;
-		this.checkIdPartita = true;
-		this.checkIdRuoli = true;
-		this.checkIdTavoli = true;
-	}
 
 	public UtenteDTO(String nome, String cognome, String username, String password) {
 		this.nome = nome;
@@ -104,6 +75,25 @@ public class UtenteDTO {
 		this.ruoloId = ruoloId;
 		this.stato = stato;
 		this.checkEmptyOrNull = checkEmptyOrNull;
+	}
+
+	public UtenteDTO(String id, String nome, String cognome, String username, String exp, String credito,
+			String[] idRuoli) {
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.username = username;
+		this.credito = credito;
+		this.exp = exp;
+		this.idRuoli = idRuoli;
+		this.checkId = true;
+		this.checkNome = true;
+		this.checkCognome = true;
+		this.checkUsername = true;
+		this.checkCredito = true;
+		this.checkExp = true;
+		this.checkStato = true;
+		this.checkIdRuoli = true;
 	}
 
 	public String getId() {
@@ -229,12 +219,12 @@ public class UtenteDTO {
 		List<String> result = new ArrayList<String>();
 		if (checkId) {
 			if(StringUtils.isBlank(this.id)) {
-				result.add("Il campo id non può essere vuoto");			
+				result.add("Il campo ID non può essere vuoto");			
 			} else {
 				try {
 					Long.parseLong(this.id);
 				} catch(NumberFormatException e) {
-					result.add("Utente inserito non valido");
+					result.add("ID Utente non valido");
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package it.solvingteam.pokeronline.web.servlet.tavolo;
+package it.solvingteam.pokeronline.web.servlet.partita;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,19 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.solvingteam.pokeronline.model.Utente;
-
 /**
- * Servlet implementation class PrepareSearchTavoloServlet
+ * Servlet implementation class LeaveGameServlet
  */
-@WebServlet("/tavolo/PrepareSearchTavoloServlet")
-public class PrepareSearchTavoloServlet extends HttpServlet {
+@WebServlet("/LeaveGameServlet")
+public class LeaveGameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PrepareSearchTavoloServlet() {
+    public LeaveGameServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,8 +26,8 @@ public class PrepareSearchTavoloServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("proprietario", ((Utente) request.getSession().getAttribute("utente")).getUsername());
-		request.getRequestDispatcher("/jsp/tavolo/search-tavolo.jsp").forward(request, response);
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

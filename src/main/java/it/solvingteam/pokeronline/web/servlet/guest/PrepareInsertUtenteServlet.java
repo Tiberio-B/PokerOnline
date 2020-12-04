@@ -31,7 +31,7 @@ public class PrepareInsertUtenteServlet extends HttpServlet {
 
 		String[] paramNames = new String[]{"username", "password"};
     	Utils.sendParamsBack(request, paramNames);
-    	request.getRequestDispatcher("jsp/guest/signup.jsp").forward(request, response);
+    	request.getRequestDispatcher("/jsp/signup.jsp").forward(request, response);
 	}
 
 	/**

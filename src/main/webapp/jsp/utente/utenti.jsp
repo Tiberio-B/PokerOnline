@@ -7,7 +7,7 @@
 	<title>Tavoli</title>
 	
 	<!-- style per le pagine diverse dalla index -->
-    <link href="./assets/css/global.css" rel="stylesheet">
+    <link href="../assets/css/global.css" rel="stylesheet">
     
 </head>
 <body>
@@ -32,8 +32,8 @@
 		                        <th>Username</th>
 		                        <th>Esperienza</th>
 		                        <th>Credito</th>
-		                        <th>Ruolo</th>
 		                        <th>Stato</th>
+		                        <th>Ruolo</th>
 		                        <th>Data Registrazione</th>
 		                        <th>Azioni</th>
 		                    </tr>
@@ -47,14 +47,21 @@
 		                        <td><c:out value = "${item.username}"/></td>
 		                        <td><c:out value = "${item.exp}"/></td>
 		                        <td><c:out value = "${item.credito}"/></td>
-		                        <td><c:out value = "${item.ruolo}"/></td>
 		                        <td><c:out value = "${item.stato}"/></td>
+		                        <td><c:out value = "RUOLO"/></td>
 		                        <td><c:out value = "${item.dataRegistrazione}"/></td>
 		                        <!-- <td><c:forEach var = "giocatore" items ="item.giocatori"><c:out value = "giocatore.username>"/></c:forEach></td> -->
 		                        <td>
 									<a class="btn  btn-sm btn-outline-secondary" href="ShowUtenteServlet?id=${item.id}">Visualizza</a>
 									<a class="btn  btn-sm btn-outline-primary ml-2 mr-2" href="PrepareUpdateUtenteServlet?id=${item.id}">Modifica</a>
-									<a class="btn btn-outline-danger btn-sm" href="PrepareDeleteTavoloServlet?id=${item.id}">Rimuovi</a>
+									
+									<c:if test="${item.stato == 'CREATO' || item.stato == 'INATTIVO'}">
+									<a class="btn btn-outline-danger btn-sm" href="ActivateUtenteServlet?id=${item.id}">Attiva</a>
+									</c:if>
+									<c:if test="${item.stato == 'ATTIVO'}">
+									<a class="btn btn-outline-danger btn-sm" href="DeactivateUtenteServlet?id=${item.id}">Disattiva</a>
+									</c:if>
+									
 								</td>
 		                    </tr>
 		                    </c:forEach>

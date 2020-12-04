@@ -5,7 +5,7 @@
 <jsp:include page="../header.jsp" />
 
 <!-- Custom styles for this template -->
-<link href="./assets/css/global.css" rel="stylesheet">
+<link href="../assets/css/global.css" rel="stylesheet">
 <style type="text/css">
 body {
 	padding-top: 3.5rem;

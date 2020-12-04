@@ -16,4 +16,7 @@ public interface TavoloService extends GenericService<Tavolo> {
 
 	List<Tavolo> elencaConGiocatori();
 
+	Tavolo caricaConGiocatori(Long id);
+
+	Tavolo caricaConProprietarioEGiocatori(Long id);
 }

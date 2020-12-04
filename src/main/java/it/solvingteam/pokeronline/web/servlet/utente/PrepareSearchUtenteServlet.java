@@ -21,7 +21,7 @@ import it.solvingteam.pokeronline.service.utente.UtenteService;
 /**
  * Servlet implementation class ListUtentiServlet
  */
-@WebServlet("/PrepareSearchUtenteServlet")
+@WebServlet("/utente/PrepareSearchUtenteServlet")
 public class PrepareSearchUtenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -54,7 +54,7 @@ public class PrepareSearchUtenteServlet extends HttpServlet {
 		}
 		request.setAttribute("stati", stati);
 		request.setAttribute("ruoli", ruoloService.elenca());
-		request.getRequestDispatcher("jsp/utente/search-utente.jsp").forward(request, response);
+		request.getRequestDispatcher("/jsp/utente/search-utente.jsp").forward(request, response);
 	}
 
 	/**

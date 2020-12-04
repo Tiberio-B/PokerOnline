@@ -25,12 +25,12 @@
 	    <div class="container">
 	      <h1 class="display-3">Benvenuto/a ${sessionScope.utente.nome}</h1>
 	      <br/><br/>
-	    <p><a class="btn btn-primary btn-lg" href="PrepareSearchTavoloServlet"
+	    <p><a class="btn btn-primary btn-lg" href="tavolo/PrepareSearchTavoloServlet"
 	    	role="button" ${sessionScope.specialPlayerPriviledges?'disabled':''}
 								aria-disabled="${sessionScope.specialPlayerPriviledges}">Gestione Tavoli &raquo;</a></p>
-	    <p><a class="btn btn-primary btn-lg" href="PlayManagementServlet" role="button"  ${sessionScope.playerPriviledges?'disabled':''}
+	    <p><a class="btn btn-primary btn-lg" href="partita/PlayManagementServlet" role="button"  ${sessionScope.playerPriviledges?'disabled':''}
 								aria-disabled="${sessionScope.playerPriviledges}">Gestione Partite &raquo;</a></p>
-	    <p><a class="btn btn-primary btn-lg" href="PrepareSearchUtenteServlet" role="button"  ${sessionScope.adminPriviledges?'disabled':''}
+	    <p><a class="btn btn-primary btn-lg" href="utente/ListUtentiServlet" role="button"  ${sessionScope.adminPriviledges?'disabled':''}
 								aria-disabled="${sessionScope.adminPriviledges}">Gestione Utenti &raquo;</a></p>
 	    </div>    
 	  </div>

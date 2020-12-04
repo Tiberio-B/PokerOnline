@@ -46,7 +46,7 @@ public class ExecuteInsertUtenteServlet extends HttpServlet {
     private void sendBack(HttpServletRequest request, HttpServletResponse response, UtenteDTO utenteDTO) throws ServletException, IOException {
     	
     	request.setAttribute("utenteDTO", utenteDTO);
-    	request.getRequestDispatcher("jsp/guest/signup.jsp").forward(request, response);
+    	request.getRequestDispatcher("/jsp/signup.jsp").forward(request, response);
     }
 
 	/**

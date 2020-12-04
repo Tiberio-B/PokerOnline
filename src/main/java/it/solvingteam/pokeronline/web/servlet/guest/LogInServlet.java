@@ -82,14 +82,13 @@ public class LogInServlet extends HttpServlet {
 		session.setAttribute("playerPriviledges", autenticato.isPlayer());
 		session.setAttribute("specialPlayerPriviledges", autenticato.isSpecialPlayer());
 		
-		request.getRequestDispatcher("jsp/home.jsp").forward(request, response);
+		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}
 
 	private void goBack(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String[] paramNames = new String[]{"username", "password"};
     	Utils.sendParamsBack(request, paramNames);
-    	request.getRequestDispatcher("login.jsp").forward(request, response);
-		
+    	request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 
 }

@@ -23,25 +23,14 @@ public class TavoloDTO {
 	private String[] idGiocatori;
 	
 	public TavoloDTO() {};
-	
-	public TavoloDTO(String id, String nome, String expMin, String puntataMin, String dataCreazione,
-			String idProprietario, String[] idGiocatori) {
-		this.id = id;
-		this.nome = nome;
-		this.expMin = expMin;
-		this.puntataMin = puntataMin;
-		this.dataCreazione = dataCreazione;
-		this.idProprietario = idProprietario;
-		this.idGiocatori = idGiocatori;
-	}
 
 	public TavoloDTO(String nome, String puntataMin, String expMin, String dataCreazione,
-			boolean checkNotNull) {
+			boolean checkEmptyOrNull) {
 		this.nome = nome;
 		this.puntataMin = puntataMin;
 		this.expMin = expMin;
 		this.dataCreazione = dataCreazione;
-		this.checkEmptyOrNull = checkNotNull;
+		this.checkEmptyOrNull = checkEmptyOrNull;
 	}
 
 	public String getId() {
@@ -175,7 +164,7 @@ public class TavoloDTO {
 			try {
 				new SimpleDateFormat("yyyy-MM-dd").parse(dataCreazione);
 			} catch (ParseException e) {
-				result.add("Data registrazione inserita non valida");
+				result.add("Data creazione inserita non valida");
 			}
 		}
 		if (checkProprietario) {

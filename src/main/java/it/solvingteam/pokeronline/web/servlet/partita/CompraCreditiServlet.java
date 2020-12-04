@@ -20,7 +20,7 @@ import it.solvingteam.pokeronline.util.Utils;
 /**
  * Servlet implementation class CompraCreditiServlet
  */
-@WebServlet("/CompraCreditiServlet")
+@WebServlet("/partita/CompraCreditiServlet")
 public class CompraCreditiServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -56,7 +56,7 @@ public class CompraCreditiServlet extends HttpServlet {
 		String creditiParam = request.getParameter("crediti");
 		if (creditiParam == null) {
 			Utils.addError(request, "Inserire quantità crediti.");
-			request.getRequestDispatcher("jsp/partita/play-management.jsp").forward(request, response);
+			request.getRequestDispatcher("/jsp/partita/play-management.jsp").forward(request, response);
 			return;
 		}
 		int crediti = 0;
@@ -64,7 +64,7 @@ public class CompraCreditiServlet extends HttpServlet {
 			crediti = Integer.valueOf(creditiParam);
 		} catch (NumberFormatException e) {
 			Utils.addError(request, "Crediti inseriti non validi.");
-			request.getRequestDispatcher("jsp/partita/play-management.jsp").forward(request, response);
+			request.getRequestDispatcher("/jsp/partita/play-management.jsp").forward(request, response);
 			return;
 		}
 		
@@ -73,7 +73,7 @@ public class CompraCreditiServlet extends HttpServlet {
 		utente = utenteService.aggiungiCredito(utente, crediti);
 		session.setAttribute("utente", utente);
 		
-		request.getRequestDispatcher("jsp/partita/play-management.jsp").forward(request, response);
+		request.getRequestDispatcher("/jsp/partita/play-management.jsp").forward(request, response);
 	}
 
 }

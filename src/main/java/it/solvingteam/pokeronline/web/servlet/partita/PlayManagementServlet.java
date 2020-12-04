@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class PlayManagementServlet
  */
-@WebServlet("/PlayManagementServlet")
+@WebServlet("/partita/PlayManagementServlet")
 public class PlayManagementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,7 +27,7 @@ public class PlayManagementServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.getRequestDispatcher("jsp/partita/play-management.jsp").forward(request, response);
+		request.getRequestDispatcher("/jsp/partita/play-management.jsp").forward(request, response);
 	}
 
 	/**

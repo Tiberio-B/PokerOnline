@@ -6,7 +6,7 @@
 <title>Cerca un Utente</title>
 
 <!-- style per le pagine diverse dalla index -->
-<link href="./assets/css/global.css" rel="stylesheet">
+<link href="../assets/css/global.css" rel="stylesheet">
 
 </head>
 <body>
@@ -100,7 +100,7 @@
 					</div>
 
 					<button type="submit" name="submit" value="submit" id="submit"
-						class="btn btn-primary">Conferma</button>
+						class="btn btn-primary">Cerca</button>
 
 
 				</form>
