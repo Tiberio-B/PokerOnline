@@ -23,7 +23,7 @@
 		    </div>
 		    <div class='card-body'>
 
-					<form method="post" action="ExecuteUpdateTavoloServlet" novalidate="novalidate">
+					<form method="post" action="ExecuteUpdateUtenteServlet" novalidate="novalidate">
 					
 						<c:set var = "utente" scope = "request" value = "${utenteDTO}"/>
 					

@@ -78,6 +78,7 @@ public class ExecuteInsertUtenteServlet extends HttpServlet {
 		instance.setDataRegistrazione(new Date());
 		instance.setCredito(0);
 		instance.setExp(0);
+		instance.setStato(Utente.Stato.CREATO);
 		utenteService.inserisci(instance);
 		request.setAttribute("successMessage", "Registrazione avvenuta con successo. Attendi l'attivazione dell'utenza prima di effettuare l'accesso.");
 		request.getRequestDispatcher("login.jsp").forward(request, response);
