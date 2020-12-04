@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
+import it.solvingteam.pokeronline.model.Ruolo;
+
 public class Utils {
 	
 	/**
@@ -147,7 +149,7 @@ public class Utils {
 	}
 	
 	public static String dateToString(Date date) {
-		String pattern = "dd-MM-yyyy";
+		String pattern = "yyyy-MM-dd";
 		return dateToString(date, pattern);
 	}
 	
@@ -170,8 +172,15 @@ public class Utils {
 		for (int i=0; i < ret.length; i++) {
 			ret[i] = enumArray[i].name();
 		}
-		return ret;
-		
+		return ret;	
+	}
+
+	public static <T> String[] toStringArray(Set<Ruolo> set) {
+		String[] ret = new String[set.size()];
+		for (int i=0; i < ret.length; i++) {
+			ret[i] = set.iterator().next().getCodice().name();
+		}
+		return ret;	
 	}
 
 }

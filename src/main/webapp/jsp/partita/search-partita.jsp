@@ -45,7 +45,7 @@
 							
 							<div class="form-group col-md-3">
 								<label>Data Creazione</label>
-								<input type="date" name="dataCreazione" id="dataCreazione" class="form-control" placeholder="Inserire la data di creazione" value="${utils.dateToString(tavolo.dataCreazione)}">
+								<input type="date" name="dataCreazione" id="dataCreazione" class="form-control" placeholder="Inserire la data di creazione" value="${tavolo.dataCreazione}">
 							</div>
 							
 						</div>

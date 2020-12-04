@@ -26,7 +26,7 @@ public class Tavolo {
 	
 	private Date dataCreazione;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "proprietario_fk", nullable = false)
 	private Utente proprietario;
 	

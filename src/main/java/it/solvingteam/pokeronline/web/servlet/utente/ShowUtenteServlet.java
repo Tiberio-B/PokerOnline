@@ -60,7 +60,8 @@ public class ShowUtenteServlet extends HttpServlet {
 			return;
 		}
 		
-		request.setAttribute("utenteDTO", new UtenteDTO().buildDtoFrom(utente));
+		UtenteDTO utenteDTO = new UtenteDTO().buildDtoFrom(utente);
+		request.setAttribute("utenteDTO", utenteDTO);
 		request.getRequestDispatcher("/jsp/utente/show-utente.jsp").forward(request, response);
 	}
 

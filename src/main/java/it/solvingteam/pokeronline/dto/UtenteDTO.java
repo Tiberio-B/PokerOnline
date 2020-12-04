@@ -43,6 +43,7 @@ public class UtenteDTO {
 	private String idPartita;
 	private String[] idRuoli;
 	private String[] idTavoli;
+	private String[] ruoli;
 	
 	public UtenteDTO() {};
 
@@ -165,6 +166,12 @@ public class UtenteDTO {
 	}
 	public void setIdTavoli(String[] idTavoli) {
 		this.idTavoli = idTavoli;
+	}
+	public String[] getRuoli() {
+		return ruoli;
+	}
+	public void setRuoli(String[] ruoli) {
+		this.ruoli = ruoli;
 	}
 	
 	public List<String> errors() {
@@ -356,6 +363,7 @@ public class UtenteDTO {
 		this.setStato(utente.getStato().name());
 		this.setExp(String.valueOf(utente.getExp()));
 		this.setCredito(String.valueOf(utente.getCredito()));
+		this.setRuoli(Utils.toStringArray(utente.getRuoli()));
 		return this;
 	}
 

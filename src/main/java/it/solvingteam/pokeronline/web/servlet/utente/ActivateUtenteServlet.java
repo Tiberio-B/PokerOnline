@@ -62,7 +62,7 @@ public class ActivateUtenteServlet extends HttpServlet {
 			return;
 		}
 		
-		request.setAttribute("successMessage", "Aggiornamento effettuato con successo.");
+		request.setAttribute("successMessage", "Attivazione effettuata con successo.");
 		goBack(request, response);
 		return;
 	}

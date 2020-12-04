@@ -59,7 +59,7 @@
 		    	<dl class="row">
 				  <dt class="col-sm-3 text-right">Ruoli:</dt>
 				  <c:forEach var="ruolo" items=" ${item.ruoli}">
-				  <dd class="col-sm-9"> ${ruolo.codice}</dd>
+				  <dd class="col-sm-9"> <c:out value="${ruolo}" /> </dd>
 				  </c:forEach>
 		    	</dl>
 		    	

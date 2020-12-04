@@ -22,7 +22,7 @@
 		    </div>
 		    <div class='card-body'>
 
-					<form method="post" action="/tavolo/ExecuteInsertTavoloServlet" novalidate="novalidate">
+					<form method="post" action="ExecuteInsertTavoloServlet" novalidate="novalidate">
 					
 						<c:set var = "tavolo" scope = "request" value = "${tavoloDTO}"/>
 					

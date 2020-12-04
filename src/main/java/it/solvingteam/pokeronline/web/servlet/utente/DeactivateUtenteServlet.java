@@ -62,7 +62,7 @@ public class DeactivateUtenteServlet extends HttpServlet {
 			return;
 		}
 		
-		request.setAttribute("successMessage", "Aggiornamento effettuato con successo.");
+		request.setAttribute("successMessage", "Disattivazione effettuata con successo.");
 		goBack(request, response);
 		return;
 	}

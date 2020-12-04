@@ -56,15 +56,12 @@
 		    </div>
 		    
 		    <div class='card-footer'>
-		        <a href="" class='btn btn-outline-secondary' style='width:100px'>
-		            <i class='fa fa-chevron-left'></i> Indietro
-		        </a>
 		        
-		        <a href="/tavolo/PrepareUpdateTavoloServlet?id=${item.id}" class='btn btn-outline-primary ml-2 mr-2' style='width:100px'>
+		        <a href="PrepareUpdateTavoloServlet?id=${item.id}" class='btn btn-outline-primary ml-2 mr-2' style='width:100px'>
 		            <i class='fa fa-chevron-left'></i> Modifica
 		        </a>
 		        
-		        <a href="/tavolo/ExecuteDeleteTavoloServlet?id=${item.id}" class='btn btn-outline-secondary btn-outline-danger' style='width:100px'>
+		        <a href="ExecuteDeleteTavoloServlet?id=${item.id}" class='btn btn-outline-secondary btn-outline-danger' style='width:100px'>
 		            <i class='fa fa-chevron-left'></i> Rimuovi
 		        </a>
 		    </div>

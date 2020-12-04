@@ -44,7 +44,7 @@ public class TavoloServiceImpl extends GenericServiceImpl<Tavolo> implements Tav
 
 	@Override
 	public boolean aggiungiGiocatori(Tavolo tavolo, Utente... giocatori) {
-		tavolo = carica(tavolo.getId());
+		tavolo = caricaConGiocatori(tavolo.getId());
 		boolean aggiunti = false;
 		Set<Utente> giocanti = tavolo.getGiocatori();
 		for (Utente giocatore : giocatori) {

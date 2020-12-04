@@ -52,7 +52,7 @@ public class GoToGameServlet extends HttpServlet {
 			return;
 		}
 		
-		Tavolo partita = tavoloService.carica(id);
+		Tavolo partita = tavoloService.caricaConGiocatori(id);
 		if (partita == null) {
 			Utils.addError(request, "Impossibile accedere alla partita.");
 			goBack(request, response);
@@ -68,6 +68,10 @@ public class GoToGameServlet extends HttpServlet {
 		if (utente.getCredito() < partita.getPuntataMin()) {
 			Utils.addError(request, "Non si dispone del credito sufficiente per accedere alla partita.");
 			goBack(request, response);
+		}
+		
+		if (!partita.getGiocatori().contains(utente)) {
+			tavoloService.aggiungiGiocatori(partita, utente);
 		}
 			
 		request.setAttribute("partita", partita);
